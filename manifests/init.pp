@@ -40,6 +40,7 @@ class kiosk(
   $packages         = ['xorg','openbox','squid3']
 ) {
 
+# werkt nog niet
 #  file { '/etc/apt/sources.list.d':
 #    ensure => 'directory',
 #  }
@@ -58,34 +59,56 @@ class kiosk(
     }
 
 user { "kiosk":
-  ensure     => "present",
-  managehome => true,
+	comment		=> "kiosk user",
+	home		=> "/home/kiosk",
+	ensure		=> present,
+	managehome	=> true,
+	#shell		=> "/bin/bash",
+	#uid		=> '501',
+	#gid		=> '20'
 }
-
 file { '/home/kiosk/.profile':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/.profile.erb"),
-    require     => [Package[$packages]]
+    ensure		=> present,
+    mode		=> '0644',
+    content		=> template("kiosk/.profile.erb"),
+    require     => [User['kiosk']]
     }
 
-file { '/etc/squid3/squid.conf':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/squid.conf.erb"),
-    require     => [Package[$packages]]
-	}
+# autologin kiosk user
+#   file { '/etc/init/tty1.conf':
+#    ensure		=> present,
+#    mode		=> '0644',
+#    content	=> 'exec /sbin/getty -8 38400 --autologin kiosk tty1',
+#    require	=> [User['kiosk']]
+#    }
 
-#file { '/home/kiosk/.config/midori/config':
-#    ensure  => present,
-#    mode    => '0644',
-#    content => template("kiosk/midori-config.erb"),
-#    require => Package['midori']
-# }
+#  autostart midori in kiosk mode
+#   file { '/home/kiosk/.xinitrc':
+#    ensure		=> present,
+#    mode		=> '0644',
+#    owner		=> 'kiosk',
+#    content	=> '/usr/bin/midori -e Fullscreen -a http://www.naturalis.nl',
+#    require	=> [User['kiosk']]
+#    }
+
+file { '/etc/squid3/squid.conf':
+    ensure		=> present,
+    mode		=> '0644',
+    content		=> template("kiosk/squid.conf.erb"),
+    require     => [Package[$packages]]
+ }
 
  service { 'squid3':
-    ensure  => 'running',
-    require => File['/etc/squid3/squid.conf']
+    ensure		=> 'running',
+    require		=> File['/etc/squid3/squid.conf']
   }
+
+#file { '/home/kiosk/.config/midori/config':
+#    ensure		=> present,
+#    mode		=> '0644',
+#    content	=> template("kiosk/midori-config.erb"),
+#    require	=> Package['midori']
+# }
+
 
 }
