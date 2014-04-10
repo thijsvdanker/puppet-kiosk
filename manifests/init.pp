@@ -45,9 +45,14 @@ class kiosk(
     ensure => 'directory',
   }
 
- apt::ppa { 'ppa:midori/ppa':
+apt::key { 'ppa:midori':
+  key        => 'A69241F1',
+  key_server => 'keyserver.ubuntu.com',
+}
+
+# apt::ppa { 'ppa:midori/ppa':
 #  require => File['/etc/apt/sources.list.d']
- }
+# }
 
 #   package { 'midori':
 #    ensure => installed,
