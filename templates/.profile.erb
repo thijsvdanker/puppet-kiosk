@@ -1,0 +1,7 @@
+# This is an example config file for the .profile.
+
+#Startx Automatically
+if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
+ . startx
+ logout
+fi

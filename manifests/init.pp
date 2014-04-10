@@ -57,4 +57,33 @@ package { [
   ensure  => present,
   require => Exec['apt-update']
 }
+
+file { '/home/kiosk/.profile':
+    ensure  => present,
+    mode    => '600',
+    content => template("kiosk/.profile.erb"),
+    require => Package['openbox']
+  }
+
+file { '/etc/squid3/squid.conf':
+    ensure  => present,
+    mode    => '600',
+    content => template("kiosk/squid.conf.erb"),
+    require => Package['squid3']
+
+}
+
+file { '/home/kiosk/.config/midori/config':
+    ensure  => present,
+    mode    => '600',
+    content => template("kiosk/config.erb"),
+    require => Package['midori']
+
+}
+
+ service { 'squid3':
+    ensure  => 'running',
+    require => File['/etc/squid3/squid.conf']
+  }
+
 )
