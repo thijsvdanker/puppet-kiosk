@@ -37,7 +37,7 @@
 #
 
 class kiosk(
-	$packages     = ['xorg','openbox','squid3']
+		$packages   = ['xorg','openbox','squid3']
 )
 {
 	file { '/etc/apt/sources.list.d':
@@ -46,8 +46,8 @@ class kiosk(
 
 # add key and install latest midori browser
 	apt::key { 'ppa:midori':
-	key           => 'A69241F1',
-	key_server    => 'keyserver.ubuntu.com',
+		key         => 'A69241F1',
+		key_server  => 'keyserver.ubuntu.com',
 	}
 
 	 package { 'midori':
@@ -62,10 +62,10 @@ class kiosk(
 
 #setup kiosk user
 	 user { "kiosk":
-	comment       => "kiosk user",
-	home          => "/home/kiosk",
-	ensure        => present,
-	managehome    => true,
+		comment     => "kiosk user",
+		home        => "/home/kiosk",
+		ensure      => present,
+		managehome  => true,
 	}
 
 	 file { '/home/kiosk/.profile':
