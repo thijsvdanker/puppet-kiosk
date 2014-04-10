@@ -40,38 +40,34 @@ class kiosk(
   $packages         = ['xorg','openbox','squid3']
 ) {
 
-# werkt nog niet
-  file { '/etc/apt/sources.list.d':
+  	file { '/etc/apt/sources.list.d':
     ensure => 'directory',
-  }
+  	}
 
-apt::key { 'ppa:midori':
-  key        => 'A69241F1',
-  key_server => 'keyserver.ubuntu.com',
-}
-
-# apt::ppa { 'ppa:midori/ppa':
-#  require => File['/etc/apt/sources.list.d']
-# }
+# add key and install latest midori browser
+	apt::key { 'ppa:midori':
+  	key        => 'A69241F1',
+  	key_server => 'keyserver.ubuntu.com',
+	}
 
    package { 'midori':
     ensure => latest,
-  #  require => Apt::Ppa['ppa:midori/ppa']
-  }
+    require => apt::key['ppa:midori']
+  	}
 
+# install packages
    package { $packages:
     ensure      => installed
     }
 
+#setup kiosk user
 user { "kiosk":
 	comment		=> "kiosk user",
 	home		=> "/home/kiosk",
 	ensure		=> present,
 	managehome	=> true,
-	#shell		=> "/bin/bash",
-	#uid		=> '501',
-	#gid		=> '20'
-}
+	}
+
 file { '/home/kiosk/.profile':
     ensure		=> present,
     mode		=> '0644',
@@ -88,13 +84,13 @@ file { '/home/kiosk/.profile':
 #    }
 
 #  autostart midori in kiosk mode
-#   file { '/home/kiosk/.xinitrc':
-#    ensure		=> present,
-#    mode		=> '0644',
-#    owner		=> 'kiosk',
-#    content	=> '/usr/bin/midori -e Fullscreen -a http://www.naturalis.nl',
-#    require	=> [User['kiosk']]
-#    }
+   file { '/home/kiosk/.xinitrc':
+    ensure		=> present,
+    mode		=> '0644',
+    owner		=> 'kiosk',
+    content	=> '/usr/bin/midori -e Fullscreen -a http://www.naturalis.nl',
+    require	=> [User['kiosk']]
+    }
 
 file { '/etc/squid3/squid.conf':
     ensure		=> present,

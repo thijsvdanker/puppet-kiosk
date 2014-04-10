@@ -10,7 +10,7 @@ The module has been tested on:
 
 Dependencies
 -------------
-- puppetlabs/apt
+- puppetlabs/apt 
 
 Authors
 -------------
