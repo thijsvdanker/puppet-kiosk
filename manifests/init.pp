@@ -36,42 +36,38 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 
-class kiosk ()
+class kiosk(
+  $packages         = ['xorg','openbox','squid3']
+)
 
+  file { '/etc/apt/sources.list.d':
+    ensure => 'directory',
+  }
+
+  apt::ppa { 'ppa:midori/ppa':
+    require => File['/etc/apt/sources.list.d']
+  }
+
+   package { 'midori':
+    require => Apt::Ppa['ppa:midori/ppa']
+  }
 {
-
-exec { 'apt-update':
-  command => 'apt-get update',
-  path    => '/bin:/usr/bin',
-  timeout => 0
-}
-
-apt::ppa { 'ppa:midori/ppa':
-  before => Exec['apt-update']
-}
-
-package { [
-  'xorg',
-  'openbox',
-  'midori',
-  'squid3'
-  ]:
-  ensure  => present,
-  require => Exec['apt-update']
-}
+  package { $packages:
+    ensure      => installed
+  }
 
 file { '/home/kiosk/.profile':
     ensure  => present,
     mode    => '0644',
     content => template("kiosk/.profile.erb"),
-    require => Package['openbox']
+    require     => [Package[$packages]]
   }
 
 file { '/etc/squid3/squid.conf':
     ensure  => present,
     mode    => '0644',
     content => template("kiosk/squid.conf.erb"),
-    require => Package['squid3']
+    require     => [Package[$packages]]
 
 }
 
@@ -89,4 +85,3 @@ file { '/home/kiosk/.config/midori/config':
   }
 
 }
-
