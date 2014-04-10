@@ -36,7 +36,7 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 
-class kiosk (
+class kiosk {
 
 exec { 'apt-update':
   command => 'apt-get update',
@@ -86,4 +86,5 @@ file { '/home/kiosk/.config/midori/config':
     require => File['/etc/squid3/squid.conf']
   }
 
-)
+}
+
