@@ -72,10 +72,10 @@ file { '/etc/squid3/squid.conf':
 
 }
 
-file { '/home/kiosk/.config/midori/config':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/config.erb"),
+#file { '/home/kiosk/.config/midori/config':
+#    ensure  => present,
+#    mode    => '0644',
+#    content => template("kiosk/midori-config.erb"),
 #    require => Package['midori']
 
 }
