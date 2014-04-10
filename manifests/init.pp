@@ -40,48 +40,48 @@ class kiosk(
   $packages         = ['xorg','openbox','squid3']
 ) {
 
-  file { '/etc/apt/sources.list.d':
+  file { '/etc/apt/sources.list':
     ensure => 'directory',
   }
 
   apt::ppa { 'ppa:midori/ppa':
-    require => File['/etc/apt/sources.list.d']
+    require => File['/etc/apt/sources.list']
   }
 
    package { 'midori':
     require => Apt::Ppa['ppa:midori/ppa']
   }
 
-   package { $packages:
-    ensure      => installed
-  }
+ #  package { $packages:
+ #   ensure      => installed
+ # }
 
-file { '/home/kiosk/.profile':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/.profile.erb"),
-    require     => [Package[$packages]]
-  }
+#file { '/home/kiosk/.profile':
+#    ensure  => present,
+#    mode    => '0644',
+#    content => template("kiosk/.profile.erb"),
+#    require     => [Package[$packages]]
+#  }
 
-file { '/etc/squid3/squid.conf':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/squid.conf.erb"),
-    require     => [Package[$packages]]
+#file { '/etc/squid3/squid.conf':
+#    ensure  => present,
+#    mode    => '0644',
+#    content => template("kiosk/squid.conf.erb"),
+#    require     => [Package[$packages]]
 
-}
+#}
 
-file { '/home/kiosk/.config/midori/config':
-    ensure  => present,
-    mode    => '0644',
-    content => template("kiosk/config.erb"),
-    require => Package['midori']
+#file { '/home/kiosk/.config/midori/config':
+#    ensure  => present,
+#    mode    => '0644',
+#    content => template("kiosk/config.erb"),
+#    require => Package['midori']
 
-}
+#}
 
- service { 'squid3':
-    ensure  => 'running',
-    require => File['/etc/squid3/squid.conf']
-  }
+# service { 'squid3':
+#    ensure  => 'running',
+#    require => File['/etc/squid3/squid.conf']
+#  }
 
 }
