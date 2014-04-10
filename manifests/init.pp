@@ -106,13 +106,12 @@ file { '/etc/squid3/squid.conf':
     require		=> File['/etc/squid3/squid.conf']
   }
 
-# midori config
+# midori config >> cannot create file yet!
 file { '/home/kiosk/.config/midori/config':
     ensure		=> present,
     mode		=> '0644',
     content	=> template("kiosk/midori-config.erb"),
     require	=> Package['midori']
  }
-
 
 }
