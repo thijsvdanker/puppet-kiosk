@@ -46,8 +46,8 @@ class kiosk(
 
 # add key and install latest midori browser
 	apt::key { 'ppa:midori':
-	key        => 'A69241F1',
-	key_server => 'keyserver.ubuntu.com',
+	key           => 'A69241F1',
+	key_server    => 'keyserver.ubuntu.com',
 	}
 
    package { 'midori':
@@ -62,54 +62,54 @@ class kiosk(
 
 #setup kiosk user
    user { "kiosk":
-	comment		=> "kiosk user",
-	home		=> "/home/kiosk",
-	ensure		=> present,
-	managehome	=> true,
+	comment		    => "kiosk user",
+	home          => "/home/kiosk",
+	ensure        => present,
+	managehome    => true,
 	}
 
    file { '/home/kiosk/.profile':
-    ensure		=> present,
-    mode		=> '0644',
-    content		=> template("kiosk/.profile.erb"),
+    ensure		  => present,
+    mode		    => '0644',
+    content		  => template("kiosk/.profile.erb"),
     require     => [User['kiosk']]
     }
 
 # autologin kiosk user
    file { '/etc/init/tty1.conf':
-    ensure		=> present,
-    mode		=> '0644',
+    ensure		  => present,
+    mode		    => '0644',
     content     => 'exec /sbin/getty -8 38400 --autologin kiosk tty1',
     require     => [User['kiosk']]
     }
 
 #  autostart midori in kiosk mode
    file { '/home/kiosk/.xinitrc':
-    ensure		=> present,
-    mode		=> '0644',
-    owner		=> 'kiosk',
+    ensure		  => present,
+    mode		    => '0644',
+    owner		    => 'kiosk',
     content     => '/usr/bin/midori -e Fullscreen -a http://www.naturalis.nl',
     require     => [User['kiosk']]
     }
 
 # squid proxy config
    file { '/etc/squid3/squid.conf':
-    ensure		=> present,
-    mode		=> '0644',
-    content		=> template("kiosk/squid.conf.erb"),
+    ensure		  => present,
+    mode		    => '0644',
+    content		  => template("kiosk/squid.conf.erb"),
     require     => [Package[$packages]]
  }
 
 # run squid
    service { 'squid3':
-    ensure		=> 'running',
-    require		=> File['/etc/squid3/squid.conf']
+    ensure		  => 'running',
+    require		  => File['/etc/squid3/squid.conf']
   }
 
 # midori config >> cannot create file yet!
    file { '/home/kiosk/.config/midori/config':
-    ensure		=> present,
-    mode		=> '0644',
+    ensure		  => present,
+    mode		    => '0644',
     content     => template("kiosk/midori-config.erb"),
     require     => Package['midori']
  }
