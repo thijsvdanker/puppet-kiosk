@@ -36,7 +36,9 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 
-class kiosk {
+class kiosk ()
+
+{
 
 exec { 'apt-update':
   command => 'apt-get update',
@@ -60,14 +62,14 @@ package { [
 
 file { '/home/kiosk/.profile':
     ensure  => present,
-    mode    => '600',
+    mode    => '0644',
     content => template("kiosk/.profile.erb"),
     require => Package['openbox']
   }
 
 file { '/etc/squid3/squid.conf':
     ensure  => present,
-    mode    => '600',
+    mode    => '0644',
     content => template("kiosk/squid.conf.erb"),
     require => Package['squid3']
 
@@ -75,7 +77,7 @@ file { '/etc/squid3/squid.conf':
 
 file { '/home/kiosk/.config/midori/config':
     ensure  => present,
-    mode    => '600',
+    mode    => '0644',
     content => template("kiosk/config.erb"),
     require => Package['midori']
 
