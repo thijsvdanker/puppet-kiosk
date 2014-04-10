@@ -37,5 +37,24 @@
 #
 
 class kiosk (
-  
+
+exec { 'apt-update':
+  command => 'apt-get update',
+  path    => '/bin:/usr/bin',
+  timeout => 0
+}
+
+apt::ppa { 'ppa:midori/ppa':
+  before => Exec['apt-update']
+}
+
+package { [
+  'xorg',
+  'openbox',
+  'midori',
+  'squid3'
+  ]:
+  ensure  => present,
+  require => Exec['apt-update']
+}
 )
