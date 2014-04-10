@@ -45,9 +45,9 @@ class kiosk(
     ensure => 'directory',
   }
 
-# apt::ppa { 'ppa:midori/ppa':
+ apt::ppa { 'ppa:midori/ppa':
 #  require => File['/etc/apt/sources.list.d']
-# }
+ }
 
 #   package { 'midori':
 #    ensure => installed,
