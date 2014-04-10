@@ -38,7 +38,7 @@
 
 class kiosk(
   $packages         = ['xorg','openbox','squid3']
-)
+) {
 
   file { '/etc/apt/sources.list.d':
     ensure => 'directory',
@@ -51,8 +51,8 @@ class kiosk(
    package { 'midori':
     require => Apt::Ppa['ppa:midori/ppa']
   }
-{
-  package { $packages:
+
+   package { $packages:
     ensure      => installed
   }
 
