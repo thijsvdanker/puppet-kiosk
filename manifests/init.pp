@@ -57,6 +57,11 @@ class kiosk(
     ensure      => installed
     }
 
+user { "kiosk":
+  ensure     => "present",
+  managehome => true,
+}
+
 file { '/home/kiosk/.profile':
     ensure  => present,
     mode    => '0644',
