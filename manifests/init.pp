@@ -76,7 +76,7 @@ file { '/home/kiosk/.config/midori/config':
     ensure  => present,
     mode    => '0644',
     content => template("kiosk/config.erb"),
-    require => Package['midori']
+#    require => Package['midori']
 
 }
 
