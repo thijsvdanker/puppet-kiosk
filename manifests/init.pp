@@ -52,7 +52,7 @@ class kiosk(
 
    package { 'midori':
     ensure => installed,
-    require => Apt::Ppa['ppa:midori/ppa']
+ #   require => Apt::Ppa['ppa:midori/ppa']
   }
 
  #  package { $packages:
