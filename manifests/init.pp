@@ -40,16 +40,19 @@ class kiosk(
   $packages         = ['xorg','openbox','squid3']
 ) {
 
-  file { '/etc/apt/sources.list':
-    ensure => 'directory',
-  }
+#  file { '/etc/apt/sources.list.d':
+#    ensure => 'directory',
+#  }
 
-  apt::ppa { 'ppa:midori/ppa':
-    require => File['/etc/apt/sources.list']
-  }
+  apt::ppa { 'ppa:midori/ppa': }
+
+ # apt::ppa { 'ppa:midori/ppa':
+ #  require => File['/etc/apt/sources.list.d']
+ # }
 
    package { 'midori':
-    require => Apt::Ppa['ppa:midori/ppa']
+    require => apt::ppa['ppa:midori/ppa']
+    ensure => installed
   }
 
  #  package { $packages:
