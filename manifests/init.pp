@@ -33,7 +33,7 @@
 #
 # === Copyright
 #
-# Copyright 2014 Your name here, unless otherwise noted.
+# Copyright 2014
 #
 
 class kiosk(
@@ -41,9 +41,9 @@ class kiosk(
 ) {
 
 # werkt nog niet
-#  file { '/etc/apt/sources.list.d':
-#    ensure => 'directory',
-#  }
+  file { '/etc/apt/sources.list.d':
+    ensure => 'directory',
+  }
 
 # apt::ppa { 'ppa:midori/ppa':
 #  require => File['/etc/apt/sources.list.d']
