@@ -55,30 +55,28 @@ class kiosk(
 
    package { $packages:
     ensure      => installed
-  }
+    }
 
 file { '/home/kiosk/.profile':
     ensure  => present,
     mode    => '0644',
     content => template("kiosk/.profile.erb"),
     require     => [Package[$packages]]
-  }
+    }
 
 file { '/etc/squid3/squid.conf':
     ensure  => present,
     mode    => '0644',
     content => template("kiosk/squid.conf.erb"),
     require     => [Package[$packages]]
-
-}
+	}
 
 #file { '/home/kiosk/.config/midori/config':
 #    ensure  => present,
 #    mode    => '0644',
 #    content => template("kiosk/midori-config.erb"),
 #    require => Package['midori']
-
-}
+# }
 
  service { 'squid3':
     ensure  => 'running',
