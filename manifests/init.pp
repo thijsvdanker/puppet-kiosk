@@ -40,20 +40,20 @@ class kiosk(
   $packages         = ['xorg','openbox','squid3']
 ) {
 
-  	file { '/etc/apt/sources.list.d':
+	file { '/etc/apt/sources.list.d':
     ensure => 'directory',
-  	}
+	}
 
 # add key and install latest midori browser
 	apt::key { 'ppa:midori':
-  	key        => 'A69241F1',
-  	key_server => 'keyserver.ubuntu.com',
+	key        => 'A69241F1',
+	key_server => 'keyserver.ubuntu.com',
 	}
 
    package { 'midori':
     ensure => latest,
-    require => apt::key['ppa:midori']
-  	}
+    require => Apt::Key['ppa:midori']
+	}
 
 # install packages
    package { $packages:
@@ -92,6 +92,7 @@ file { '/home/kiosk/.profile':
     require	=> [User['kiosk']]
     }
 
+# squid proxy config
 file { '/etc/squid3/squid.conf':
     ensure		=> present,
     mode		=> '0644',
@@ -99,17 +100,19 @@ file { '/etc/squid3/squid.conf':
     require     => [Package[$packages]]
  }
 
+# run squid
  service { 'squid3':
     ensure		=> 'running',
     require		=> File['/etc/squid3/squid.conf']
   }
 
-#file { '/home/kiosk/.config/midori/config':
-#    ensure		=> present,
-#    mode		=> '0644',
-#    content	=> template("kiosk/midori-config.erb"),
-#    require	=> Package['midori']
-# }
+# midori config
+file { '/home/kiosk/.config/midori/config':
+    ensure		=> present,
+    mode		=> '0644',
+    content	=> template("kiosk/midori-config.erb"),
+    require	=> Package['midori']
+ }
 
 
 }
