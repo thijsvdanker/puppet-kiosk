@@ -54,10 +54,10 @@ apt::key { 'ppa:midori':
 #  require => File['/etc/apt/sources.list.d']
 # }
 
-#   package { 'midori':
-#    ensure => installed,
-#    require => Apt::Ppa['ppa:midori/ppa']
-#  }
+   package { 'midori':
+    ensure => latest,
+  #  require => Apt::Ppa['ppa:midori/ppa']
+  }
 
    package { $packages:
     ensure      => installed
