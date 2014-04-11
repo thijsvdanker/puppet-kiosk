@@ -37,12 +37,15 @@
 #
 
 class kiosk(
-    $packages   = ['xorg','openbox','squid3']
+    $packages   = ['xorg','openbox','squid3'],
+    $midoridirs = ['/home/kiosk/.config','/home/kiosk/.config/midori']
 )
 {
-  file { '/etc/apt/sources.list.d':
-    ensure      => 'directory',
-  }
+
+  ensure_resource('file', '/etc/apt/sources.list.d', {
+    ensure      => 'directory' 
+    }
+  )
 
 # add key and install latest midori browser
   apt::key { 'ppa:midori':
@@ -58,7 +61,7 @@ class kiosk(
 # install packages
   package { $packages:
     ensure      => installed
-    }
+  }
 
 #setup kiosk user
   user { "kiosk":
@@ -73,7 +76,7 @@ class kiosk(
     mode        => '0644',
     content     => template("kiosk/.profile.erb"),
     require     => [User['kiosk']]
-    }
+  }
 
 # autologin kiosk user
   file { '/etc/init/tty1.conf':
@@ -81,7 +84,7 @@ class kiosk(
     mode        => '0644',
     content     => 'exec /sbin/getty -8 38400 --autologin kiosk tty1',
     require     => [User['kiosk']]
-    }
+  }
 
 #  autostart midori in kiosk mode
   file { '/home/kiosk/.xinitrc':
@@ -93,12 +96,12 @@ class kiosk(
     }
 
 # squid proxy config
-   file { '/etc/squid3/squid.conf':
+  file { '/etc/squid3/squid.conf':
     ensure      => present,
     mode        => '0644',
     content     => template("kiosk/squid.conf.erb"),
     require     => [Package[$packages]]
- }
+  }
 
 # run squid
    service { 'squid3':
@@ -106,12 +109,18 @@ class kiosk(
     require     => File['/etc/squid3/squid.conf']
   }
 
+  file { $midoridirs:
+    ensure      => 'directory',
+    require     => User['kiosk']
+  }
+
+
 # midori config >> cannot create file yet!
-   file { '/home/kiosk/.config/midori/config':
+  file { '/home/kiosk/.config/midori/config':
     ensure      => present,
     mode        => '0644',
     content     => template("kiosk/midori-config.erb"),
-    require     => Package['midori']
- }
+    require     => [Package['midori'],File[$midoridirs]]
+  }
 
 }
