@@ -98,5 +98,11 @@ class kiosk(
     content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
-
+# improve midori scrollbar
+  file { '/home/kiosk/.gtkrc-2.0':
+    ensure        => present,
+    mode          => '0644',
+    content       => 'template("kiosk/.gtkrc-2.0.erb")',
+    require       => [Package['midori'],File[$midoridirs]]
+  }
 }
