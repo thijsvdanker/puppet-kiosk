@@ -83,7 +83,7 @@ class kiosk(
   file { '/etc/init/tty1.conf':
     ensure      => present,
     mode        => '0644',
-    content     => 'exec /sbin/getty -8 38400 --autologin kiosk tty1',
+    content     => template("kiosk/tty1.conf.erb"),
     require     => [User['kiosk']]
   }
 
