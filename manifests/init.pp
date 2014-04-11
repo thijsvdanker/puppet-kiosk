@@ -13,7 +13,7 @@
 
 class kiosk(
   $packages       = ['xorg','openbox','squid3'],
-  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori']
+  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/openbox']
 )
 {
 
@@ -57,12 +57,12 @@ class kiosk(
     content       => template("kiosk/tty1.conf.erb"),
     require       => [User['kiosk']]
   }
-# autostart midori in fullscreen
+# autostart openbox session
   file { '/home/kiosk/.xinitrc':
     ensure        => present,
     mode          => '0644',
     owner         => 'kiosk',
-    content       => '/usr/bin/midori -e Fullscreen',
+    content       => 'openbox-session',
     require       => [User['kiosk']]
   }
 # squid proxy config
@@ -89,6 +89,13 @@ class kiosk(
     ensure        => present,
     mode          => '0644',
     content       => template("kiosk/midori-config.erb"),
+    require       => [Package['midori'],File[$midoridirs]]
+  }
+# autostart midori
+  file { '/home/kiosk/.config/openbox/autostart.sh':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
 
