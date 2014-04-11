@@ -43,7 +43,7 @@ class kiosk(
 {
 
   ensure_resource('file', '/etc/apt/sources.list.d', {
-    ensure      => 'directory' 
+    ensure      => 'directory'
     }
   )
 
@@ -69,6 +69,7 @@ class kiosk(
     home        => "/home/kiosk",
     ensure      => present,
     managehome  => true,
+    password    => sha1('kiosk'),
   }
 
   file { '/home/kiosk/.profile':
