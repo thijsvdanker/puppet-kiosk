@@ -13,7 +13,7 @@
 
 class kiosk(
   $packages       = ['xorg','openbox','squid3'],
-  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/openbox']
+  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/openbox','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'
 )
 {
 
@@ -103,6 +103,13 @@ class kiosk(
     ensure        => present,
     mode          => '0644',
     content       => 'template("kiosk/.gtkrc-2.0.erb")',
+    require       => [Package['midori'],File[$midoridirs]]
+  }
+# improve midori scrollbar more
+  file { '/home/kiosk/.local/share/midori/styles/scrollbar.user.css':
+    ensure        => present,
+    mode          => '0644',
+    content       => 'template("kiosk/scrollbar.user.css.erb")',
     require       => [Package['midori'],File[$midoridirs]]
   }
 }
