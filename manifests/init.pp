@@ -1,35 +1,10 @@
 # == Class: kiosk
 #
-# Full description of class kiosk here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
-#
-# === Examples
-#
-#  class { kiosk:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
+# Puppet module to install kiosk browser
 #
 # === Authors
 #
-# Author Name foppe.pieters@naturalis.nl
+# foppe.pieters@naturalis.nl
 #
 # === Copyright
 #
@@ -37,91 +12,84 @@
 #
 
 class kiosk(
-    $packages   = ['xorg','openbox','squid3'],
-    $midoridirs = ['/home/kiosk/.config','/home/kiosk/.config/midori']
+  $packages       = ['xorg','openbox','squid3'],
+  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori']
 )
 {
 
-  ensure_resource('file', '/etc/apt/sources.list.d', {
-    ensure      => 'directory'
+  ensure_resource('file', '/etc/apt/sources.list.d',{
+    ensure        => 'directory'
     }
   )
-
-# add key and install latest midori browser
+# add midori key
   apt::key { 'ppa:midori':
-    key         => 'A69241F1',
-    key_server  => 'keyserver.ubuntu.com',
+    key           => 'A69241F1',
+    key_server    => 'keyserver.ubuntu.com',
   }
-
+# install latest midori browser
   package { 'midori':
-    ensure      => latest,
-    require     => Apt::Key['ppa:midori']
+    ensure        => latest,
+    require       => Apt::Key['ppa:midori']
   }
-
 # install packages
   package { $packages:
-    ensure      => installed
+    ensure        => installed
   }
-
-#setup kiosk user
+# setup kiosk user
   user { "kiosk":
-    comment     => "kiosk user",
-    home        => "/home/kiosk",
-    ensure      => present,
-    managehome  => true,
-    password    => sha1('kiosk'),
+    comment       => "kiosk user",
+    home          => "/home/kiosk",
+    ensure        => present,
+    managehome    => true,
+    password      => sha1('kiosk'),
   }
-
+# startx on login
   file { '/home/kiosk/.profile':
-    ensure      => present,
-    mode        => '0644',
-    content     => template("kiosk/.profile.erb"),
-    require     => [User['kiosk']]
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/.profile.erb"),
+    require       => [User['kiosk']]
   }
-
 # autologin kiosk user
   file { '/etc/init/tty1.conf':
-    ensure      => present,
-    mode        => '0644',
-    content     => template("kiosk/tty1.conf.erb"),
-    require     => [User['kiosk']]
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/tty1.conf.erb"),
+    require       => [User['kiosk']]
   }
-
-#  autostart midori in kiosk mode
+# autostart midori in fullscreen
   file { '/home/kiosk/.xinitrc':
-    ensure      => present,
-    mode        => '0644',
-    owner       => 'kiosk',
-    content     => '/usr/bin/midori -e Fullscreen -a http://www.naturalis.nl',
-    require     => [User['kiosk']]
-    }
-
+    ensure        => present,
+    mode          => '0644',
+    owner         => 'kiosk',
+    content       => '/usr/bin/midori -e Fullscreen',
+    require       => [User['kiosk']]
+  }
 # squid proxy config
   file { '/etc/squid3/squid.conf':
-    ensure      => present,
-    mode        => '0644',
-    content     => template("kiosk/squid.conf.erb"),
-    require     => [Package[$packages]]
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/squid.conf.erb"),
+    require       => [Package[$packages]]
   }
-
-# run squid
-   service { 'squid3':
-    ensure      => 'running',
-    require     => File['/etc/squid3/squid.conf']
+# ensure squid is running
+  service { 'squid3':
+    ensure        => 'running',
+    require       => File['/etc/squid3/squid.conf']
   }
-
+# make userdirs
   file { $midoridirs:
-    ensure      => 'directory',
-    require     => User['kiosk']
+    ensure        => 'directory',
+    require       => User['kiosk'],
+    owner         => 'kiosk',
+    group         => 'kiosk'
   }
-
-
-# midori config >> cannot create file yet!
+# set midori config
   file { '/home/kiosk/.config/midori/config':
-    ensure      => present,
-    mode        => '0644',
-    content     => template("kiosk/midori-config.erb"),
-    require     => [Package['midori'],File[$midoridirs]]
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/midori-config.erb"),
+    require       => [Package['midori'],File[$midoridirs]]
   }
 
 }
