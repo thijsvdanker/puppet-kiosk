@@ -62,7 +62,7 @@ class kiosk(
     ensure        => present,
     mode          => '0644',
     owner         => 'kiosk',
-    content       => 'openbox-session',
+    content       => template("kiosk/.xinitrc.erb"),
     require       => [User['kiosk']]
   }
 # squid proxy config
@@ -102,14 +102,14 @@ class kiosk(
   file { '/home/kiosk/.gtkrc-2.0':
     ensure        => present,
     mode          => '0644',
-    content       => 'template("kiosk/.gtkrc-2.0.erb")',
+    content       => template("kiosk/.gtkrc-2.0.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
 # improve midori scrollbar more
   file { '/home/kiosk/.local/share/midori/styles/scrollbar.user.css':
     ensure        => present,
     mode          => '0644',
-    content       => 'template("kiosk/scrollbar.user.css.erb")',
+    content       => template("kiosk/scrollbar.user.css.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
 }
