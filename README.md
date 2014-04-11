@@ -1,8 +1,6 @@
 puppet-kiosk
 ===================
-
 Puppet module to install kiosk browser
---------------
 
 The module has been tested on
 -------------
