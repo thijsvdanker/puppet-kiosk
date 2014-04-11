@@ -57,7 +57,7 @@ class kiosk(
     content       => template("kiosk/tty1.conf.erb"),
     require       => [User['kiosk']]
   }
-# autostart openbox session
+# autostart openbox and disable screensaver/blanking
   file { '/home/kiosk/.xinitrc':
     ensure        => present,
     mode          => '0644',
