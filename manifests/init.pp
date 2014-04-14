@@ -22,14 +22,19 @@ class kiosk(
     }
   )
 # add midori key
-  apt::key { 'ppa:midori':
-    key           => 'A69241F1',
-    key_server    => 'keyserver.ubuntu.com',
+
+apt::ppa { 'ppa:midori/ppa':
+    require => File['/etc/apt/sources.list.d']
   }
+
+#  apt::key { 'ppa:midori':
+#    key           => 'A69241F1',
+#    key_server    => 'keyserver.ubuntu.com',
+#  }
 # install latest midori browser
   package { 'midori':
     ensure        => latest,
-    require       => Apt::Key['ppa:midori']
+    require       => Apt::Ppa['ppa:midori/ppa']
   }
 # install packages
   package { $packages:
@@ -106,12 +111,12 @@ class kiosk(
     require       => [Package['midori'],File[$midoridirs]]
   }
 # improve midori scrollbar more
-  file { '/home/kiosk/.local/share/midori/styles/scrollbar.user.css':
-    ensure        => present,
-    mode          => '0644',
-    owner         => 'kiosk',
-    group         => 'kiosk',
-    content       => template("kiosk/scrollbar.user.css.erb"),
-    require       => [Package['midori'],File[$midoridirs]]
-  }
+#  file { '/home/kiosk/.local/share/midori/styles/scrollbar.user.css':
+#    ensure        => present,
+#    mode          => '0644',
+#    owner         => 'kiosk',
+#    group         => 'kiosk',
+#    content       => template("kiosk/scrollbar.user.css.erb"),
+#    require       => [Package['midori'],File[$midoridirs]]
+#  }
 }
