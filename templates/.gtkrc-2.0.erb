@@ -31,7 +31,11 @@ style "scrollbar" = "default" {
   bg[NORMAL] = "#00C0FF"
   bg[PRELIGHT] = "#D3D3DD"
   GtkScrollbar::slider-width          = 40
-  GtkScrollbar::fixed-slider-length   = 40
+  GtkScrollbar::min-slider-length   = 40
+  GtkScrollbar::has-backward-stepper = 0
+  GtkScrollbar::has_secondary_backward_stepper = 0
+  GtkScrollbar::has-forward-stepper = 0
+  GtkScrollbar::has_secondary_forward_stepper = 0
 }
 widget "*GtkHScrollbar" style "scrollbar"
 widget "*GtkVScrollbar" style "scrollbar"
