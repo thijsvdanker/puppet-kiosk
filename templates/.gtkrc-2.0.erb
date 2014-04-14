@@ -2,9 +2,10 @@
 
 style "scroll"
 {
+gtk_color_scheme = "fg_color:#101010"
+gtk_color_scheme = "bg_color:#CECECE"
+gtk_color_scheme = "base_color:#F5F5F5"
   GtkScrollbar::slider-width          = 40
-  GtkScrollbar::activate-slider       = 1
-  GtkScrollbar::fixed-slider-length   = 20
   bg[NORMAL] = shade (0.70, @bg_color)
   bg[PRELIGHT] = shade (0.70, @bg_color)
   bg[ACTIVE] = shade (1.0, @bg_color)
