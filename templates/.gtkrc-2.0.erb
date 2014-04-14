@@ -131,45 +131,6 @@ style "murrine-default"
         separatorstyle = 1
     }
 }
-
-
-style "murrine-wide"
-{
-    xthickness = 2
-    ythickness = 2
-}
-style "murrine-wider"
-{
-    xthickness = 3
-    ythickness = 3
-    fg[SELECTED] = @menu_fg_color
-}
-
-style "murrine-scale" = "murrine-button"
-{
-    GtkRange::slider-width = 15
-    bg[NORMAL] = shade (1.0, @bg_color)
-    bg[PRELIGHT] = shade (1.05, @bg_color)
-    bg[ACTIVE] = shade (0.90, @bg_color)
-    bg[SELECTED] = shade (0.60, @bg_color)
-    bg[INSENSITIVE] = shade (1.0, @bg_color)
-    engine "murrine"
-    {
-        contrast = 0.8
-        roundness = 0
-    }
-}
-style "murrine-hscale" = "murrine-scale" {}
-style "murrine-vscale" = "murrine-scale" {}
-style "murrine-nautilus-location"
-{
-    bg[NORMAL] = shade (1.25, @selected_bg_color)
-}
-style "murrine-radiocheck" = "murrine-default"
-{
-    text[NORMAL] = @selected_fg_color
-    text[PRELIGHT] = @selected_fg_color
-}
 style "murrine-scrollbar"
 {
     bg[NORMAL] = shade (0.70, @bg_color)
@@ -202,118 +163,9 @@ class "GtkWidget" style "murrine-default"
 class "GtkFrame" style "murrine-wide"
 class "GtkEntry" style "murrine-entry"
 class "MetaFrames" style "metacity-frame"
-class "GtkSeparator" style "murrine-wide"
-class "GtkWindow" style "metacity-frame"
-class "GtkCalendar" style "murrine-wide"
-class "GtkSpinButton" style "murrine-spinbutton"
 class "GtkScale" style "murrine-scale"
 class "GtkVScale" style "murrine-vscale"
 class "GtkHScale" style "murrine-hscale"
 class "GtkScrollbar" style "murrine-scrollbar"
 class "GtkVScrollbar" style "murrine-vscrollbar"
 class "GtkHScrollbar" style "murrine-hscrollbar"
-class "GtkRadio*" style "murrine-radiocheck"
-class "GtkCheck*" style "murrine-radiocheck"
-class "GtkToolbar"   style "murrine-toolbar"
-class "GtkHandleBox*" style "murrine-toolbar"
-widget_class "*<GtkNotebook>*<GtkEventBox>" style "murrine-notebook-bg"
-widget_class "*<GtkNotebook>*<GtkDrawingArea>" style "murrine-notebook-bg"
-widget_class "*<GtkNotebook>*<GtkLayout>" style "murrine-notebook-bg"
-widget_class "*<GtkNotebook>*<GtkViewport>" style "murrine-notebook-bg"
-widget_class "*<GtkNotebook>*<GtkScrolledWindow>" style "murrine-notebook-bg"
-widget_class "*<GtkButton>" style "murrine-button"
-widget_class "*<GtkNotebook>" style "murrine-notebook"
-widget_class "*<GtkStatusbar>*" style "murrine-statusbar"
-widget_class "*<GtkComboBoxEntry>*" style "murrine-comboboxentry"
-widget_class "*<GtkCombo>*" style "murrine-comboboxentry"
-widget_class "*<GtkMenuBar>*" style "murrine-menubar"
-widget_class "*<GtkMenu>*" style "murrine-menu"
-widget_class "*<GtkMenuItem>*" style "murrine-menu-item" 
-widget_class "*<GtkSeparatorMenuItem>*" style "murrine-separator-menu-item"
-widget_class "*.<GtkFrame>.<GtkLabel>" style "murrine-frame-title"
-widget_class "*.<GtkTreeView>*" style "murrine-treeview"
-widget_class "*<GtkProgress>" style "murrine-progressbar"
-widget_class "*<GtkProgressBar>" style "murrine-progressbar"
-widget_class "*.<GtkTreeView>.<GtkButton>" style "murrine-treeview-header"
-widget_class "*.<GtkCTree>.<GtkButton>" style "murrine-treeview-header"
-widget_class "*.<GtkList>.<GtkButton>" style "murrine-treeview-header"
-widget_class "*.<GtkCList>.<GtkButton>" style "murrine-treeview-header"
-widget_class "*.ETable.ECanvas" style "murrine-treeview-header"
-widget_class "*.ETree.ECanvas" style "murrine-treeview-header"
-widget_class "*GtkCTree*" style "evolution-hack"
-widget_class "*GtkList*" style "evolution-hack"
-widget_class "*GtkCList*" style "evolution-hack"
-widget_class "*.ETree.*" style "evolution-hack"
-widget_class "*EInfoLabel*" style "evolution-hack"
-widget "gtk-tooltip*" style "murrine-tooltips"
-widget "*.nautilus-extra-view-widget" style : highest "murrine-nautilus-location"
-style "murrine-text-is-fg-color-workaround"
-{
-    text[NORMAL] = @fg_color
-    text[PRELIGHT] = @fg_color
-    text[SELECTED] = @selected_fg_color
-    text[ACTIVE] = @fg_color
-    text[INSENSITIVE] = darker (@bg_color)
-}
-widget_class "*.<GtkComboBox>.<GtkCellView>" style "murrine-text-is-fg-color-workaround"
-style "murrine-menuitem-text-is-fg-color-workaround"
-{
-    text[NORMAL]        = "#E6E6E6"
-    text[PRELIGHT]      = @selected_fg_color
-    text[SELECTED]      = @menu_fg_color
-    text[ACTIVE]        = @fg_color
-    text[INSENSITIVE]   = darker (@bg_color)
-    fg[SELECTED]        = @menu_fg_color
-}
-widget "*.gtk-combobox-popup-menu.*" style "murrine-menuitem-text-is-fg-color-workaround"
-style "murrine-fg-is-text-color-workaround"
-{
-    fg[NORMAL] = @text_color
-    fg[PRELIGHT] = @text_color
-    fg[ACTIVE] = @selected_fg_color
-    fg[SELECTED] = @menu_fg_color
-    fg[INSENSITIVE] = darker (@bg_color)
-}
-widget_class "*<GtkListItem>*" style "murrine-fg-is-text-color-workaround"
-widget_class "*<GtkCList>" style "murrine-fg-is-text-color-workaround"
-widget_class "*<EelEditableLabel>" style "murrine-fg-is-text-color-workaround"
-style "chrome-gtk-frame"
-{
-    ChromeGtkFrame::frame-color = @menu_bg_color
-    ChromeGtkFrame::inactive-frame-color = @menu_bg_color
-    ChromeGtkFrame::frame-gradient-size = 16
-    ChromeGtkFrame::frame-gradient-color = @bg_color
-    ChromeGtkFrame::inactive-frame-gradient-color = @bg_color
-    
-    ChromeGtkFrame::incognito-frame-color = @menu_bg_color
-    ChromeGtkFrame::incognito-inactive-frame-color = @menu_bg_color
-    ChromeGtkFrame::incognito-frame-gradient-size = 16
-    ChromeGtkFrame::incognito-frame-gradient-color = @bg_color
-    
-    ChromeGtkFrame::scrollbar-trough-color = @bg_color
-    ChromeGtkFrame::scrollbar-slider-prelight-color = shade (0.92, @bg_color)
-    ChromeGtkFrame::scrollbar-slider-normal-color = shade (0.92, @bg_color)
-}
-class "ChromeGtkFrame" style "chrome-gtk-frame"
-style "panel-color" {
-    #bg_pixmap[NORMAL]  = "/images/panel-bg.png"
-    bg[NORMAL] = "#b5b5b5"
-    #bg[NORMAL] = "#3E4648"
-    bg[PRELIGHT] = "#a8a8a8"
-    #bg[PRELIGHT] = "#586466"
-    bg[ACTIVE] = "#a8a8a8"
-    #bg[ACTIVE] = "#586466"
-
-    #fg[NORMAL] = "#cecece"
-    #fg[ACTIVE] = "#cecece"
-    #fg[PRELIGHT] = "#ffffff"
-    
-    engine "murrine" 
-    {
-        contrast    = 0.0
-        roundness   = 4
-        glowstyle   = 0
-        glow_shade  = 1.4
-        glazestyle  = 2
-    }
-}
