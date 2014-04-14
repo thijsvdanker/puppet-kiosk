@@ -13,7 +13,7 @@
 
 class kiosk(
   $packages       = ['xorg','openbox','squid3','unclutter'],
-  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
+  $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
 )
 {
 
@@ -88,6 +88,13 @@ class kiosk(
     ensure        => present,
     mode          => '0644',
     content       => template("kiosk/midori-config.erb"),
+    require       => [Package['midori'],File[$midoridirs]]
+  }
+# set midori mouse gestures
+  file { '/home/kiosk/.config/midori/extensions/libmouse-gestures.so/config':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/mousegestures-config.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
 # autostart midori
