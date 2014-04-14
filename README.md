@@ -2,6 +2,10 @@ puppet-kiosk
 ===================
 Puppet module to install kiosk browser
 
+Errors
+-------------
+Mouse gestures dont work yet!
+
 Packages
 -------------
 - Xorg

@@ -90,7 +90,7 @@ class kiosk(
     content       => template("kiosk/midori-config.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
-# set midori mouse gestures
+# set mouse gestures
   file { '/home/kiosk/.config/midori/extensions/libmouse-gestures.so/config':
     ensure        => present,
     mode          => '0644',
@@ -106,7 +106,7 @@ class kiosk(
     content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
-# improve midori scrollbar
+# improve scrollbar
   file { '/home/kiosk/.gtkrc-2.0':
     ensure        => present,
     mode          => '0644',
