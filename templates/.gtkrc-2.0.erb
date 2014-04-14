@@ -7,19 +7,9 @@
 # class "*" style "scroll"
 
 style "default" {
-
-  base[NORMAL]     = "#CECECE"
-
-  base[ACTIVE]     = "#D3D3DD"
-
   bg[PRELIGHT]     = "#0000FF" # progress indicator, menu bkg, icon under mouse
-  base[PRELIGHT]   = "#FF0000"
-
-
   bg[SELECTED]     = "#336699"
   bg[INSENSITIVE]  = "#0000DD"
-  base[INSENSITIVE]= "#0000DD"
-
 }
 widget "*" style "default"
 
@@ -28,8 +18,8 @@ widget "*" style "default"
 # and prelit with bg[PRELIGHT]
 style "scrollbar" = "default" {
   bg[ACTIVE] = "#303030"
-  bg[NORMAL] = "#00C0FF"
-  bg[PRELIGHT] = "#D3D3DD"
+  bg[NORMAL] = "#80E0FF"
+  bg[PRELIGHT] = "#00C0FF"
   GtkScrollbar::slider-width          = 40
   GtkScrollbar::min-slider-length   = 40
   GtkScrollbar::has-backward-stepper = 0
@@ -39,7 +29,3 @@ style "scrollbar" = "default" {
 }
 widget "*GtkHScrollbar" style "scrollbar"
 widget "*GtkVScrollbar" style "scrollbar"
-# Might as well have sliding scales the same:
-widget "*GtkHScale"     style "scrollbar"
-widget "*GtkVScale"     style "scrollbar"
-
