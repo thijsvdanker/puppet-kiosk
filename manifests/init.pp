@@ -104,13 +104,4 @@ class kiosk(
     content       => template("kiosk/.gtkrc-2.0.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
-# improve midori scrollbar more
-#  file { '/home/kiosk/.local/share/midori/styles/scrollbar.user.css':
-#    ensure        => present,
-#    mode          => '0644',
-#    owner         => 'kiosk',
-#    group         => 'kiosk',
-#    content       => template("kiosk/scrollbar.user.css.erb"),
-#    require       => [Package['midori'],File[$midoridirs]]
-#  }
 }
