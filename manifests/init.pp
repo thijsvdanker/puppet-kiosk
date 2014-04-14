@@ -12,7 +12,7 @@
 #
 
 class kiosk(
-  $packages       = ['xorg','openbox','squid3'],
+  $packages       = ['xorg','openbox','squid3','unclutter'],
   $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
 )
 {
