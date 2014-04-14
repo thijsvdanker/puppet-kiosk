@@ -10,3 +10,6 @@ http_access allow whitelist
 
 deny_info http://www.naturalis.nl/nl/het-museum/agenda/ whitelist
 http_reply_access deny blacklist whitelist
+
+# enable caching
+cache_peer .naturalis.nl/nl/het-museum/agenda/ parent 80 0
