@@ -44,7 +44,7 @@ style "murrine-default"
     GtkProgressBar::min-vertical-bar-width = 18
     GtkProgressBar::min-horizontal-bar-height = 18
     GtkScale::trough-side-details = 1
-    GtkScrollbar::min-slider-length = 30
+    GtkScrollbar::min-slider-length = 80
     GtkMenuBar::internal-padding = 1
     GtkExpander::expander-size = 16
     GtkToolbar::internal-padding = 0
@@ -69,7 +69,7 @@ style "murrine-default"
     GtkScrollbar::fixed-slider-length = 30
 
     GtkScrollbar::activate-slider = 1
-    GtkScrollbar::slider-width = 35
+    GtkScrollbar::slider-width = 40
     GtkScrollbar::trough-border = 2
     GtkScrollbar::has-backward-stepper = 0 
     GtkScrollbar::has_secondary_backward_stepper = 0 
@@ -103,7 +103,7 @@ style "murrine-default"
     engine "murrine"
     {
         animation = FALSE
-        colorize_scrollbar = FALSE
+        colorize_scrollbar = TRUE
         contrast = 0.4
         glazestyle = 1
         glow_shade = 1.5
@@ -124,7 +124,7 @@ style "murrine-default"
         rgba = FALSE
         roundness = 0
         scrollbarstyle = 0
-        sliderstyle = 0
+        sliderstyle = 1
         stepperstyle = 0
         toolbarstyle = 0
         arrowstyle = 2
@@ -132,29 +132,7 @@ style "murrine-default"
     }
 }
 
-style "murrine-toolbar" = "murrine-default"
-{
-    bg[NORMAL] = "#303030"
-    fg[NORMAL] = @menu_fg_color
-    engine "murrine"
-    {
-        contrast            = 1.13
-        toolbarstyle        = 2
-        lightborder_shade   = 1.0
-        gradient_shades     = {1.0,0.94,0.1,0.88}
-    }
-}
 
-style "evolution-hack" = "murrine-default"
-{
-    bg[NORMAL]  = shade (1.14, @bg_color)
-    bg[PRELIGHT] = shade (1.18, @bg_color)
-    bg[ACTIVE] = shade (0.75, @bg_color)
-    bg[SELECTED] = @selected_bg_color
-    fg[NORMAL] = @fg_color
-    fg[ACTIVE] = @selected_fg_color
-    fg[SELECTED] = @selected_fg_color
-}
 style "murrine-wide"
 {
     xthickness = 2
@@ -166,158 +144,7 @@ style "murrine-wider"
     ythickness = 3
     fg[SELECTED] = @menu_fg_color
 }
-style "murrine-entry" = "murrine-wider"
-{
-    bg[SELECTED] = mix (0.4, @selected_bg_color, @base_color)
-    fg[SELECTED] = @text_color
-    engine "murrine" {
-        focus_color = shade (0.65, @selected_bg_color)
-    }
-}
-style "murrine-button" = "murrine-wider"
-{   
-    bg[NORMAL]        = shade (1.06, @bg_color) 
-    bg[PRELIGHT]      = shade (1.35, @selected_bg_color)  
-    bg[ACTIVE]        = shade (0.85, @bg_color)
-    bg[SELECTED]      = shade (1.0, @selected_bg_color)  
-    bg[INSENSITIVE]   = shade (0.95, @bg_color)
 
-    engine "murrine" 
-    {
-        contrast            = .8
-        highlight_shade     = 1.00
-        lightborder_shade   = 1.7
-        gradient_shades     = {1.1,1.05,0.95,0.95} 
-        border_shades       = { 1.1, 0.9 }
-        shadow_shades       = {0.5,0.0}
-        reliefstyle         = 3
-        roundness       = 1
-    }
-}
-style "murrine-notebook-bg"
-{
-    bg[NORMAL] = shade (1.02, @bg_color)
-    bg[ACTIVE] = shade (0.92, @bg_color)
-}
-style "murrine-notebook" = "murrine-notebook-bg"
-{
-    xthickness = 1
-    ythickness = 1
-    engine "murrine"
-    {
-        roundness = 2
-        contrast = 0.6
-    }
-}
-style "murrine-menu"
-{
-    text[NORMAL] = @menu_fg_color
-    text[PRELIGHT] = @menu_fg_color
-    text[SELECTED] = @menu_fg_color
-    text[ACTIVE] = @menu_fg_color
-    bg[NORMAL] = @menu_bg_color
-    fg[NORMAL] = @menu_fg_color
-    fg[SELECTED] = @menu_fg_color
-    engine "murrine"
-    {
-        roundness = 0
-    }
-}
-style "murrine-menu-item" = "murrine-wider"
-{
-
-
-}
-style "murrine-separator-menu-item"
-{
-    GtkSeparatorMenuItem::horizontal-padding = 4
-    GtkWidget::wide-separators = 1
-    GtkWidget::separator-width = 1
-    GtkWidget::separator-height = 7
-    xthickness = 1
-    ythickness = 0
-}
-style "murrine-menubar"
-{
-    ythickness = 0
-    xthickness = 0
-    bg[SELECTED]    = @selected_blue_bg_color
-    bg[NORMAL]  = "#303030"
-    bg[PRELIGHT]    = shade (0.85, @selected_bg_color)
-    bg[ACTIVE]  = "#333333"
-    bg[INSENSITIVE] = "#303030"
-    fg[NORMAL]  = "#E6E6E6" # Color for normal text.
-    fg[PRELIGHT]    = @selected_fg_color
-    fg[SELECTED]    = @menu_fg_color
-    fg[ACTIVE]  = @selected_fg_color
-    fg[INSENSITIVE] = "#666666"
-    text[NORMAL]    = @base_color # Color for menu-item radio/checks.
-    base[NORMAL]    = "#666666" # Color for menu-item radio/checks background.
-    text[PRELIGHT]  = @selected_fg_color
-    text[SELECTED]  = @selected_fg_color
-    text[ACTIVE]    = @selected_fg_color
-    text[INSENSITIVE]   = "#666666"
-    engine "murrine" 
-    {
-        roundness = 0 # Roundness of menu items.
-    }
-}
-style "murrine-treeview"
-{
-    engine "murrine"
-    {
-        roundness = 0
-    }
-}
-style "murrine-treeview-header" = "murrine-button"
-{
-    xthickness = 2
-    ythickness = 1
-    bg[NORMAL] = shade (1.04, @bg_color)
-    bg[PRELIGHT] = shade (1.08, @bg_color)
-    bg[ACTIVE] = shade (0.85, @bg_color)
-    engine "murrine"
-    {
-        roundness = 0
-    }
-}
-style "murrine-frame-title"
-{
-    fg[NORMAL] = lighter (@fg_color)
-}
-style "murrine-tooltips" = "murrine-wider"
-{
-    bg[NORMAL] = @tooltip_bg_color
-    fg[NORMAL] = @tooltip_fg_color
-}
-style "metacity-frame" = "murrine-default"
-{
-    bg[SELECTED] = shade (0.85, @selected_bg_color)
-}
-style "murrine-progressbar"
-{
-    xthickness = 0
-    ythickness = 0
-
-    fg[PRELIGHT] = shade (1.10, @bg_color)
-    bg[NORMAL] = shade (1.10, @bg_color)
-    bg[SELECTED] = shade (0.66, @bg_color)
-
-    engine "murrine" {
-        roundness = 2
-        contrast = 0.6
-        border_shades = { 1.0, 0.8 }
-    }
-}
-style "murrine-statusbar"
-{
-    xthickness = 2
-}
-style "murrine-comboboxentry" {}
-style "murrine-spinbutton"
-{
-    bg[ACTIVE] = shade (0.85, @bg_color)
-}
 style "murrine-scale" = "murrine-button"
 {
     GtkRange::slider-width = 15
@@ -346,7 +173,7 @@ style "murrine-radiocheck" = "murrine-default"
 style "murrine-scrollbar"
 {
     bg[NORMAL] = shade (0.70, @bg_color)
-    bg[PRELIGHT] = shade (0.70, @bg_color)
+    bg[PRELIGHT] = "#1919FF"
     bg[ACTIVE] = shade (1.0, @bg_color)
     bg[INSENSITIVE] = shade (1.0, @bg_color)
 
@@ -490,29 +317,3 @@ style "panel-color" {
         glazestyle  = 2
     }
 }
-widget "*PanelWidget*" style "panel-color"
-widget "*PanelApplet*" style "panel-color"
-widget "*Xfce*Panel*" style "panel-color"
-widget_class "*Xfce*Panel*" style "panel-color"
-class "*Panel*" style "panel-color"
-class "*Tray*" style "panel-color"
-class "*tray*" style "panel-color"
-
-style "sidepane" {
-    base[NORMAL] = shade (1.08,@bg_color)
-}
-widget_class "ThunarWindow.GtkTable.GtkHPaned.ThunarShortcutsPane*" style "sidepane"
-widget_class "ThunarWindow.GtkTable.GtkHPaned.ThunarTreePane*" style "sidepane"
-style "heybuddy" {
-    bg[NORMAL] = shade (1.16,@bg_color)
-}
-
-widget "*Dent*" style "heybuddy"
-widget "*Dent*Button*" style "murrine-button"
-
-style "xfce-heading-style" { base[NORMAL] = @menu_bg_color }
-class "XfceHeading" style "xfce-heading-style"
-
-style "pcmanfm-sidebar" { base[NORMAL] = @bg_color }
-
-widget "FmMainWin.*.FmPlacesView" style "pcmanfm-sidebar"
