@@ -1,16 +1,118 @@
 # config file to edit gtk scrollbar
 
-style "scroll"
-{
+# style "scroll"
+# {
+#  GtkScrollbar::slider-width          = 40
+# }
+# class "*" style "scroll"
+
+# Theme: waldorf
+# Description: A default theme for CrunchBang Waldorf
+# Author: Philip Newborough <corenominal@corenominal.org>
+# Web: http://crunchbang.org/
+# -------------------------------------------------------
+# Theme: waldorf
+# Description: A default theme for CrunchBang Waldorf
+# Author: Philip Newborough <corenominal@corenominal.org>
+# Web: http://crunchbang.org/
+# -------------------------------------------------------
 gtk_color_scheme = "fg_color:#101010"
 gtk_color_scheme = "bg_color:#CECECE"
 gtk_color_scheme = "base_color:#F5F5F5"
-  GtkScrollbar::slider-width          = 40
-  bg[NORMAL] = shade (0.70, @bg_color)
-  bg[PRELIGHT] = shade (0.70, @bg_color)
-  bg[ACTIVE] = shade (1.0, @bg_color)
-  bg[INSENSITIVE] = shade (1.0, @bg_color)
-    engine "murrine" {
+gtk_color_scheme = "text_color:#1A1A1A"
+gtk_color_scheme = "selected_bg_color:#ABABAB"
+gtk_color_scheme = "selected_fg_color:#FFFFFF"
+gtk_color_scheme = "menu_bg_color:#000000"
+gtk_color_scheme = "menu_fg_color:#FFFFFF"
+gtk_color_scheme = "selected_blue_bg_color:#1793D1"
+gtk_color_scheme = "panel_bg_color:#616161"
+gtk-button-images = 0
+gtk-auto-mnemonics = 1
+style "murrine-default"
+{
+    xthickness = 1
+    ythickness = 1
+    GtkPaned::handle-size = 6
+    GtkRange::trough-border = 0
+    GtkRange::slider-width = 15
+    GtkRange::stepper-size = 15
+    GtkScale::slider-length = 15
+    GtkScrollbar::min-slider-length = 30
+    GtkWidget::link-color = "#4d75bf"
+    GtkWidget::visited-link-color = "#884dbf"
+    GtkScrolledWindow ::scrollbar-spacing            = 2
+    GtkScrolledWindow ::scrollbar-within-bevel       = 0
+    GtkScrollbar::min-slider-length = 30
+    #GtkScrollbar::activate-slider = 1
+    GtkScrollbar::slider-width = 40
+    GtkScrollbar::trough-border = 2
+    GtkScrollbar::has-backward-stepper = 0
+    GtkScrollbar::has_secondary_backward_stepper = 0
+    GtkScrollbar::has-forward-stepper = 0
+    GtkScrollbar::has_secondary_forward_stepper = 0
+ #GtkToolbar::shadow-type = GTK_SHADOW_NONE
+    GtkWidget::focus-line-width = 0.0
+
+    fg[NORMAL] = @fg_color
+    fg[PRELIGHT] = @fg_color
+    fg[SELECTED] = @menu_fg_color
+    fg[ACTIVE] = @fg_color
+    fg[INSENSITIVE] = darker (@bg_color)
+    bg[NORMAL] = @bg_color
+    bg[PRELIGHT] = shade (1.02, @bg_color)
+    bg[SELECTED] = @selected_blue_bg_color
+    bg[INSENSITIVE] = @bg_color
+    bg[ACTIVE] = shade (0.85, @bg_color)
+    base[NORMAL] = @base_color
+    base[PRELIGHT] = shade (0.95, @bg_color)
+    base[ACTIVE] = shade (0.75, @bg_color)
+    base[SELECTED] = @selected_bg_color
+    base[INSENSITIVE] = @bg_color
+    text[NORMAL] = @text_color
+    text[PRELIGHT] = @text_color
+    text[ACTIVE] = @selected_fg_color
+    text[SELECTED] = @menu_fg_color
+    text[INSENSITIVE] = darker (@bg_color)
+    engine "murrine"
+    {
+        animation = FALSE
+        colorize_scrollbar = FALSE
+        contrast = 0.4
+        glazestyle = 1
+        glow_shade = 1.5
+        glowstyle = 0
+        gradient_shades = {1.0,1.0,1.0,1.1}
+        border_shades = {1.1,1.0}
+        highlight_shade = 1.0
+        lightborder_shade = 1.1
+        lightborderstyle = 0
+        listviewheaderstyle = 0
+        listviewstyle = 1
+        menubaritemstyle = 0
+        menubarstyle = 0
+        menuitemstyle = 0
+        menustyle = 0
+        progressbarstyle = 0
+        reliefstyle = 0
+        rgba = FALSE
+        roundness = 0
+        scrollbarstyle = 0
+        sliderstyle = 0
+        stepperstyle = 0
+        toolbarstyle = 0
+        arrowstyle = 2
+        separatorstyle = 1
+    }
+}
+
+style "murrine-scrollbar"
+{
+    bg[NORMAL] = shade (0.70, @bg_color)
+    bg[PRELIGHT] = shade (0.70, @bg_color)
+    bg[ACTIVE] = shade (1.0, @bg_color)
+    bg[INSENSITIVE] = shade (1.0, @bg_color)
+
+engine "murrine" {
         arrowstyle      = 1
         roundness       = 0
         gradient_shades     = {1.0,1.0,1.0,1.0}
@@ -29,4 +131,9 @@ gtk_color_scheme = "base_color:#F5F5F5"
     }
 }
 
-class "*" style "scroll"
+style "murrine-hscrollbar" = "murrine-scrollbar" {}
+style "murrine-vscrollbar" = "murrine-scrollbar" {}
+class "GtkWidget" style "murrine-default"
+class "GtkScrollbar" style "murrine-scrollbar"
+class "GtkVScrollbar" style "murrine-vscrollbar"
+class "GtkHScrollbar" style "murrine-hscrollbar"
