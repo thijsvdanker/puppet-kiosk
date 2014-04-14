@@ -99,7 +99,6 @@ class kiosk(
     owner         => 'kiosk',
     group         => 'kiosk'
   }
-  }
 # autostart midori
   file { '/home/kiosk/.config/openbox/autostart.sh':
     ensure        => present,
