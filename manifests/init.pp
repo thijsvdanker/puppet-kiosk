@@ -99,6 +99,16 @@ class kiosk(
     owner         => 'kiosk',
     group         => 'kiosk'
   }
+# set mouse gestures 2
+  file { '/home/kiosk/.config/midori/extensions/libmouse-gestures.so/gestures':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/mousegestures-gestures.erb"),
+    require       => [Package['midori'],File[$midoridirs]],
+    owner         => 'kiosk',
+    group         => 'kiosk'
+  }
+
 # autostart midori
   file { '/home/kiosk/.config/openbox/autostart.sh':
     ensure        => present,
