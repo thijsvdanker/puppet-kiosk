@@ -95,7 +95,10 @@ class kiosk(
     ensure        => present,
     mode          => '0644',
     content       => template("kiosk/mousegestures-config.erb"),
-    require       => [Package['midori'],File[$midoridirs]]
+    require       => [Package['midori'],File[$midoridirs]],
+    owner         => 'kiosk',
+    group         => 'kiosk'
+  }
   }
 # autostart midori
   file { '/home/kiosk/.config/openbox/autostart.sh':
