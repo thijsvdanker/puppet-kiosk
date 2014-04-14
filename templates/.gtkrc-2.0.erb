@@ -2,10 +2,30 @@
 
 style "scroll"
 {
-    GtkScrollbar::slider-width        = 40
-#   GtkScrollbar::slider-width        = 0
-#   GtkScrollbar::slider-height       = 0
-
+  GtkScrollbar::slider-width          = 40
+  GtkScrollbar::activate-slider       = 1
+  GtkScrollbar::fixed-slider-length   = 20
+  bg[NORMAL] = shade (0.70, @bg_color)
+  bg[PRELIGHT] = shade (0.70, @bg_color)
+  bg[ACTIVE] = shade (1.0, @bg_color)
+  bg[INSENSITIVE] = shade (1.0, @bg_color)
+    engine "murrine" {
+        arrowstyle      = 1
+        roundness       = 0
+        gradient_shades     = {1.0,1.0,1.0,1.0}
+        highlight_shade     = 1.0
+        glow_shade      = 1.0
+        reliefstyle     = 2
+        gradient_colors     = FALSE
+        lightborder_shade       = 1.0
+        lightborderstyle    = 0
+        trough_shades           = { 1.0, 1.0}
+        trough_border_shades    = { 1.0, 1.0 }
+        border_shades       = { 1.0, 1.0}     # slider border outline
+        shadow_shades       = { 0.5, 0.8 }
+        contrast        = 0.0           # no trough-border
+        prelight_shade      = 0.65
+    }
 }
 
 class "*" style "scroll"
