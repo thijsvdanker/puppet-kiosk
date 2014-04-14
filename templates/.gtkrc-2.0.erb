@@ -6,57 +6,22 @@
 # }
 # class "*" style "scroll"
 
-
 style "default" {
-  # I started out with this default style
-  # before I found out about the various widgets.
-  # I'm leaving it in here as a "catch-all" case for
-  # things I've missed.
-  fg[NORMAL]       = "#ffff00"
-  bg[NORMAL]       = "#600090"
-# bg NOT black, because there's a "use black for icons" bug in the gimp
-# 2000-06-09: actually it's in the class *GtkRadioButton
-# but the problem might be wider than that
-#  base[NORMAL]     = "#E5E5F7"
-  base[NORMAL]     = "#000000"
-  text[NORMAL]     = "#ffff00"
-# BASE is used for background in list boxes etc
-# TEXT is used as the foreground for widgets that use BASE as bg colour
 
-  fg[ACTIVE]       = "#FFFF00"
-  bg[ACTIVE]       = "#00C050"
+  base[NORMAL]     = "#CECECE"
+
   base[ACTIVE]     = "#D3D3DD"
-  text[ACTIVE]     = "#ffff00"
 
-  fg[PRELIGHT]     = "#FFFF00"
   bg[PRELIGHT]     = "#0000FF" # progress indicator, menu bkg, icon under mouse
   base[PRELIGHT]   = "#FF0000"
-# 003070 nice, but poor contrast with the purple
-  text[PRELIGHT]    = "#ffff00"
 
-  fg[SELECTED]     = "#FFFFFF"
+
   bg[SELECTED]     = "#336699"
-  text[SELECTED]     = "#ffffff"
-
-  fg[INSENSITIVE]  = "#747474"
   bg[INSENSITIVE]  = "#0000DD"
   base[INSENSITIVE]= "#0000DD"
-  text[INSENSITIVE]= "#FF9000"
-  font = "-adobe-helvetica-medium-r-normal--*-180-*-*-*-*-iso8859-1"
+
 }
 widget "*" style "default"
-
-
-# Let's make rulers a little different from the surrounding area
-# (it would be nice if we could make those arrows bigger, but ...)
-style "ruler" = "default" {
-  bg[NORMAL]     = "#703000"
-}
-widget "*GtkHRuler" style "ruler"
-widget "*GtkVRuler" style "ruler"
-
-
-
 
 # Scroll bars are printed on a background of bg[ACTIVE]
 # The bar and the arrows are bg[NORMAL]
@@ -64,8 +29,9 @@ widget "*GtkVRuler" style "ruler"
 style "scrollbar" = "default" {
   bg[ACTIVE] = "#303030"
   bg[NORMAL] = "#00C0FF"
-  bg[PRELIGHT] = "#803000"
+  bg[PRELIGHT] = "#D3D3DD"
   GtkScrollbar::slider-width          = 40
+  GtkScrollbar::fixed-slider-length   = 40
 }
 widget "*GtkHScrollbar" style "scrollbar"
 widget "*GtkVScrollbar" style "scrollbar"
