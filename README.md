@@ -1,19 +1,25 @@
 puppet-kiosk
 ===================
-Puppet module to install kiosk browser
+Puppet module to install a simple kiosk browser.
+It only installs Xorg, Openbox window manager, Squid3 proxy, Midori browser with mouse gestures and Unclutter to hide the mouse cursor.
 
 Errors
 -------------
 Mouse gestures dont work yet!
 
-Packages
+Parameters
 -------------
-- Xorg
-- Openbox
-- Squid3 (whitelisting and caching enabled)
-- Midori (with mouse gestures)
-- Unclutter (to hide mouse cursor)
+All parameters are read from defaults in init.pp and can be overwritten by hiera or The foreman.
 
+```
+  $packages       = ['xorg','openbox','squid3','unclutter'],
+
+  # squid3 config:
+  $http_port      = "8080",
+  $acl_whitelist  = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
+  $deny_info      = "http://www.naturalis.nl/nl/het-museum/agenda/",
+  $cache_peer     = undef
+```
 Limitations
 -------------
 This module has been built on and tested against Puppet 3.2.3 and higher.
@@ -23,7 +29,7 @@ The module has been tested on
 
 Dependencies
 -------------
-- none so far
+- stdlib
 
 Authors
 -------------
