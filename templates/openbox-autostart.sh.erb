@@ -5,4 +5,4 @@
 # fi
 unclutter -idle 0 &
 sleep 1
-midori -e Fullscreen -i 300 -a www.naturalis.nl -e http-proxy=http://localhost -e proxy-type=MIDORI_PROXY_HTTP -e homepage=http://www.naturalis.nl
+midori --inactivity-reset=300 --app=www.naturalis.nl --config=/home/kiosk/.config/midori/config --execute= Fullscreen --execute=http-proxy=http://localhost --execute=proxy-type=MIDORI_PROXY_HTTP --execute=homepage=http://www.naturalis.nl
