@@ -3,7 +3,7 @@ http_port <%= @http_port %>
 #http_port 8080
 
 #acl localhost src 127.0.0.1
-acl whitelist url_regex <%= @acl_whitelist %>
+acl whitelist url_regex <%= @acl_whitelist_real %>
 #acl whitelist url_regex .naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*
 
 acl blacklist dstdomain *

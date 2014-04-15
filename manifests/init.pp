@@ -15,11 +15,21 @@ class kiosk(
   $packages       = ['xorg','openbox','squid3','unclutter'],
   $midoridirs     = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
   $http_port      = "8080",
-  $acl_whitelist  = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
+  $acl_whitelist  = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
   $deny_info      = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $cache_peer     = ['.naturalis.nl/nl/het-museum/agenda/']
 )
 {
+  include stdlib
+
+  $acl_whitelist_real = join($acl_whitelist,'|')
+
+  if ($cache_peer) {
+    $cache_peer_real = $cache_peer
+  }
+  else {
+    $cache_peer_real = $acl_whitelist_real
+  }
   ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure        => 'directory'
     }
