@@ -98,7 +98,8 @@ class kiosk(
     ensure        => 'directory',
     require       => User['kiosk'],
     owner         => 'kiosk',
-    group         => 'kiosk'
+    group         => 'kiosk',
+    mode          => '0644'
   }
 # set midori config
   file { '/home/kiosk/.config/midori/config':
