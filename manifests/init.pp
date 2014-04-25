@@ -24,7 +24,7 @@ class kiosk(
   $deny_info                            = undef,
   $cache_peer                           = undef
 )
-
+{
  if ($role == "agenda") {
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/"
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
@@ -39,8 +39,6 @@ class kiosk(
       $cache_peer                           =  ".earth.nullschool.net/"
     }
   }
-
-{
   include stdlib
 # make whitelist usable with regex
   $acl_whitelist_real = join($acl_whitelist,'|')
