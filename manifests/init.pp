@@ -104,7 +104,7 @@ class kiosk(
 # set midori config
   file { '/home/kiosk/.config/midori/config':
     ensure        => present,
-    mode          => '0644',
+    mode          => '0444',
     content       => template("kiosk/midori-config.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
