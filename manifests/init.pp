@@ -26,14 +26,14 @@ class kiosk(
 )
 {
  if ($role == "agenda") {
-  $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/"
+  $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $cache_peer                           =  ".naturalis.nl/"
   }
   else {
     if ($role == "earth") {
-      $homepage                             = "http://earth.nullschool.net/#current/wind/surface/level/orthographic=-354.98,48.03,435"
+      $homepage                             = "http://earth.nullschool.net/#current/wind/surface/level/orthographic=-354.98,48.03,435",
       $acl_whitelist                        = ['.earth.nullschool.net/#current/wind/surface/level/','.earth.nullschool.net/#current/wind/surface/level/*'],
       $deny_info                            = "http://earth.nullschool.net/#current/wind/surface/level/orthographic=-354.98,48.03,435",
       $cache_peer                           =  ".earth.nullschool.net/"
