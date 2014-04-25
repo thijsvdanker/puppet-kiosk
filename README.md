@@ -3,9 +3,10 @@ puppet-kiosk
 Puppet module to install a simple kiosk browser.
 It only installs Xorg, Openbox window manager, Squid3 proxy, Midori browser with mouse gestures and Unclutter to hide the mouse cursor.
 
-Errors
+Roles
 -------------
-Mouse gestures dont work yet!
+- Agenda -> Kiosk browser voor Naturalis online agenda
+- Earth -> Kiosk browser voor life aardebol en windstromen
 
 Parameters
 -------------
@@ -13,15 +14,16 @@ All parameters are read from defaults in init.pp and can be overwritten by hiera
 
 ```
   $packages                             = ['xorg','openbox','squid3','unclutter'],
-
-  # squid3 config:
+  $midoridirs                           = ['/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
   $http_port                            = "8080",
-  $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
-  $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
-  $cache_peer                           =  ".naturalis.nl/",
   $cache_mem                            = "128 MB",
-  $cache_max_object_size                = "1024 MB"
-  $cache_maximum_object_size_in_memory  = "512 KB"
+  $cache_max_object_size                = "1024 MB",
+  $cache_maximum_object_size_in_memory  = "512 KB",
+  $role                                 = "agenda",
+  $homepage                             = undef,
+  $acl_whitelist                        = undef,
+  $deny_info                            = undef,
+  $cache_peer                           = undef
 ```
 Limitations
 -------------
