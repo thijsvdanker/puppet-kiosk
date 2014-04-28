@@ -7,3 +7,4 @@ class kiosk::agenda (
     $deny_info                          = "http://www.naturalis.nl/nl/het-museum/agenda/",
     $cache_peer                         =  ".naturalis.nl/"
 )
+{}
