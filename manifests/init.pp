@@ -25,21 +25,28 @@ class kiosk(
   $cache_peer                           = undef
 )
 {
- if ($role == "agenda") {
-  $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
-  $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
-  $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
-  $cache_peer                           =  ".naturalis.nl/"
+  if $role == "agenda" {
+    class {'kiosk::agenda':
+    homepage           => $homepage,
+    acl_whitelist      => $acl_whitelist,
+    deny_info          => $deny_info,
+    cache_peer         => $cache_peer
   }
+}
+  elsif $role == "earth" {
+    class {'kiosk::earth':
+    homepage           => $homepage,
+    acl_whitelist      => $acl_whitelist,
+    deny_info          => $deny_info,
+    cache_peer         => $cache_peer
+  }
+}
   else {
-    if ($role == "earth") {
-      $homepage                             = "http://earth.nullschool.net/#current/wind/surface/level/orthographic=-354.98,48.03,435",
-      $acl_whitelist                        = ['.earth.nullschool.net/#current/wind/surface/level/','.earth.nullschool.net/#current/wind/surface/level/*'],
-      $deny_info                            = "http://earth.nullschool.net/#current/wind/surface/level/orthographic=-354.98,48.03,435",
-      $cache_peer                           =  ".earth.nullschool.net/"
-    }
+        fail("unknown mode")
   }
+
   include stdlib
+
 # make whitelist usable with regex
   $acl_whitelist_real = join($acl_whitelist,'|')
 # if cache_peer not set, use whitelist for caching
