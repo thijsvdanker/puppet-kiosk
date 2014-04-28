@@ -3,11 +3,6 @@ puppet-kiosk
 Puppet module to install a simple kiosk browser.
 It only installs Xorg, Openbox window manager, Squid3 proxy, Midori browser with mouse gestures and Unclutter to hide the mouse cursor.
 
-Roles
--------------
-- Agenda -> Kiosk browser voor Naturalis online agenda
-- Earth -> Kiosk browser voor life aardebol en windstromen
-
 Parameters
 -------------
 All parameters are read from defaults in init.pp and can be overwritten by hiera or The foreman.

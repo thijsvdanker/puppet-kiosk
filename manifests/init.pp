@@ -18,35 +18,22 @@ class kiosk(
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
-  $role                                 = "agenda",
-  $homepage                             = undef,
-  $acl_whitelist                        = undef,
-  $deny_info                            = undef,
-  $cache_peer                           = undef
+  $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
+  $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/','.naturalis.nl/media','.naturalis.nl/static/*'],
+  $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
+  $cache_peer                           =  ".naturalis.nl/"
 )
 {
-  if $role == "agenda" {
-    class {'kiosk::agenda':
-    homepage           => $homepage,
-    acl_whitelist      => $acl_whitelist,
-    deny_info          => $deny_info,
-    cache_peer         => $cache_peer
-  }
-}
-  elsif $role == "earth" {
-    class {'kiosk::earth':
-    homepage           => $homepage,
-    acl_whitelist      => $acl_whitelist,
-    deny_info          => $deny_info,
-    cache_peer         => $cache_peer
-  }
-}
-  else {
-        fail("unknown mode")
-  }
-
   include stdlib
-
+# make whitelist usable with regex
+  $acl_whitelist_real = join($acl_whitelist,'|')
+# if cache_peer not set, use whitelist for caching
+  if ($cache_peer) {
+    $cache_peer_real = $cache_peer
+  }
+  else {
+    $cache_peer_real = $acl_whitelist_real
+  }
   ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure        => 'directory'
     }
