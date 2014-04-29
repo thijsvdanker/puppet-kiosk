@@ -14,7 +14,6 @@ All parameters are read from defaults in init.pp and can be overwritten by hiera
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
-  $role                                 = "agenda",
   $homepage                             = undef,
   $acl_whitelist                        = undef,
   $deny_info                            = undef,
