@@ -52,6 +52,32 @@ class kiosk(
   package { $packages:
     ensure        => installed
   }
+# download and untar transparent cursor
+  exec { 'download_transparent':
+      command        => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
+      unless         => "/usr/bin/test -d /temp/xcursor-transparent-theme-0.1.1.tar.gz",
+  }
+# configure transparent cursor
+  exec {"config_transparent":
+    command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
+    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
+    unless                => "/usr/bin/test -f /home/processing/.icons/",
+    require               => Exec["download_transparent"]
+  }
+ # make transparent cursor
+  exec {"make_transparent":
+    command               => "/usr/bin/make install-data-local DESTDIR=/home/processing/.icons/default CURSOR_DIR=/cursors",
+    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
+    unless                => "/usr/bin/test -f /home/processing/.icons/default",
+    require               => Exec["config_transparent"]
+  }
+# autoset transparent cursor
+   file { '/home/processing/.icons/default/cursors/emptycursor':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("processing/emptycursor.erb"),
+    require               => Exec["make_transparent"]
+  }
 # setup kiosk user
   user { "kiosk":
     comment       => "kiosk user",
