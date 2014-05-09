@@ -61,21 +61,21 @@ class kiosk(
   exec {"config_transparent":
     command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
-    unless                => "/usr/bin/test -f /home/processing/.icons/",
+    unless                => "/usr/bin/test -f /home/kiosk/.icons/",
     require               => Exec["download_transparent"]
   }
  # make transparent cursor
   exec {"make_transparent":
-    command               => "/usr/bin/make install-data-local DESTDIR=/home/processing/.icons/default CURSOR_DIR=/cursors",
+    command               => "/usr/bin/make install-data-local DESTDIR=/home/ḱiosk/.icons/default CURSOR_DIR=/cursors",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-    unless                => "/usr/bin/test -f /home/processing/.icons/default",
+    unless                => "/usr/bin/test -f /home/kiosk/.icons/default",
     require               => Exec["config_transparent"]
   }
 # autoset transparent cursor
-   file { '/home/processing/.icons/default/cursors/emptycursor':
+   file { '/home/kiosk/.icons/default/cursors/emptycursor':
     ensure                => present,
     mode                  => '0644',
-    content               => template("processing/emptycursor.erb"),
+    content               => template("kiosk/emptycursor.erb"),
     require               => Exec["make_transparent"]
   }
 # setup kiosk user
