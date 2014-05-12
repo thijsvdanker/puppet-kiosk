@@ -31,13 +31,6 @@ class kiosk::html5(
   package { $packages:
     ensure        => installed
   }
-# autostart midori
-  file { '/home/kiosk/.config/openbox/autostart.sh':
-    ensure        => present,
-    mode          => '0644',
-    content       => template("kiosk/openbox-autostart.sh.erb"),
-    require       => [Package['midori'],File[$midoridirs]]
-  }
 }
 # if local_proxy then install squid3
 if $local_proxy   == 'true' {

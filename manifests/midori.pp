@@ -126,4 +126,32 @@ class kiosk::midori(
     content       => template("kiosk/.gtkrc-2.0.erb"),
     require       => [Package['midori'],File[$midoridirs]]
   }
+# autostart midori
+  if $mode == "agenda" {
+    file { '/home/kiosk/.config/openbox/autostart.sh':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/openbox-autostart.sh.erb"),
+    require       => [File['/home/kiosk/.config/openbox']]
+    }
+  }
+
+  elsif $mode == "html5" {
+    file { '/home/kiosk/.config/openbox/autostart.sh':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/openbox-autostart.sh.erb"),
+    require       => [File['/home/kiosk/.config/openbox']]
+    }
+  }
+
+    elsif $mode == "java" {
+    file { '/home/kiosk/.config/openbox/autostart.sh':
+    ensure        => present,
+    mode          => '0644',
+    content       => template("kiosk/openbox-autostart-java.sh.erb"),
+    require       => [File['/home/kiosk/.config/openbox']]
+    }
+  }
+  else { fail("unknown mode") }
 }

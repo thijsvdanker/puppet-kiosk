@@ -51,13 +51,6 @@ common::directory_structure{ "/data/kiosk/${applet_name}":
     require       => Common::Directory_structure["/data/kiosk/${applet_name}"]
   }
 
-# autostart midori
-  file { '/home/kiosk/.config/openbox/autostart.sh':
-    ensure        => present,
-    mode          => '0644',
-    content       => template("kiosk/openbox-autostart-java.sh.erb"),
-    require       => [Package['midori'],File[$midoridirs]]
-  }
 }
 # if local_proxy then install squid3
 if $local_proxy   == 'true' {
