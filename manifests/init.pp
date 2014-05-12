@@ -13,6 +13,9 @@
 
 class kiosk(
     $mode                                 = "agenda",
+    $extractpassword                       = "undef",
+    $applet_name                           = "undef",
+    $interactive_name                      = "undef"
 )
 {
 include stdlib
