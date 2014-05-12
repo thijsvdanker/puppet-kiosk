@@ -12,6 +12,7 @@
 #
 
 class kiosk::java(
+  $mode                                 = "undef",
   $packages                             = "undef",
   $midoridirs                           = "undef",
   $local_proxy                          = "undef",

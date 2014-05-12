@@ -12,6 +12,7 @@
 #
 
 class kiosk::html5(
+  $mode                                 = "undef",
   $packages                             = "undef",
   $midoridirs                           = "undef",
   $midori_path                          = "undef",

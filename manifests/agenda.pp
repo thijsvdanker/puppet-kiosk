@@ -12,6 +12,7 @@
 #
 
 class kiosk::agenda(
+  $mode                                 = "undef",
   $packages                             = "undef",
   $midoridirs                           = "undef",
   $midori_path                          = "undef",
