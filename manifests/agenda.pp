@@ -66,7 +66,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Exec["config_transparent"]
   }
 # autoset transparent cursor
-   file { '/home/kiosk/.icons/default/emptycursor':
+   file { '/home/kiosk/.icons/default/cursors/emptycursor':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/emptycursor.erb"),
