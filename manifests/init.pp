@@ -15,7 +15,6 @@ class kiosk(
     $mode                                 = "agenda",
 )
 {
-include kiosk::midori
 include stdlib
 
   if $mode == "agenda" {

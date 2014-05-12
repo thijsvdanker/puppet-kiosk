@@ -13,7 +13,7 @@
 
 class kiosk::midori(
   $midoridirs                           = undef,
-  $midori_path                          = undef,
+  $midori_path                          = undef
 )
 {
   ensure_resource('file', '/etc/apt/sources.list.d',{

@@ -28,6 +28,7 @@ class kiosk::java(
   $interactive_name                     = "undef"
 )
 {
+  include kiosk::midori
 # install packages
   package { $packages:
     ensure        => installed

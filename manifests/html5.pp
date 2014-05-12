@@ -26,6 +26,7 @@ class kiosk::html5(
   $cache_peer                           = "undef"
 )
 {
+  include kiosk::midori
 # install packages
   package { $packages:
     ensure        => installed

@@ -26,6 +26,7 @@ class kiosk::agenda(
   $cache_peer                           = "undef"
 )
 {
+  include kiosk::midori
 # install packages
   package { $packages:
     ensure        => installed
@@ -35,7 +36,7 @@ class kiosk::agenda(
     ensure        => present,
     mode          => '0644',
     content       => template("kiosk/openbox-autostart.sh.erb"),
-    require       => [Package['midori'],File[$midoridirs]]
+    require       => [File['/home/kiosk/.config/openbox']]
   }
 }
 # if local_proxy then install squid3
