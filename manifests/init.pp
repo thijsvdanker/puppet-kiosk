@@ -19,6 +19,7 @@ include stdlib
 
   if $mode == "agenda" {
     class {'kiosk::agenda':
+      mode                                 => "agenda"
       packages                             => ['xorg','openbox','squid3','unclutter'],
       midoridirs                           => ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
       midori_path                          => "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
@@ -35,6 +36,7 @@ include stdlib
 
   } elsif $mode == "html5" {
       class {'kiosk::html5':
+      mode                                 => "html5"
       packages                             => ['xorg','openbox','squid3','unclutter'],
       midoridirs                           => ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles'],
       midori_path                          => "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
@@ -51,6 +53,7 @@ include stdlib
 
     } elsif $mode == "java" {
       class {'kiosk::java':
+      mode                                 => "java"
       packages                             => ['xorg','openbox','openjdk-7-jre','unclutter','p7zip-full'],
       extractpassword                      => undef,
       applet_name                          => undef,
