@@ -12,7 +12,7 @@
 #
 
 class kiosk::java(
-  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full'],
+  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $interactive_name                     = undef,
@@ -42,6 +42,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     exec { 'download_transparent':
         command        => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
         unless         => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+        require        => [Package[$packages]]
     }
   # configure transparent cursor
     exec {"config_transparent":
