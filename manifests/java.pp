@@ -16,15 +16,7 @@ class kiosk::java(
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $interactive_name                     = undef,
-  $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $homepage                             = undef,
-  $acl_whitelist                        = undef,
-  $deny_info                            = undef,
-  $cache_peer                           = undef,
-  $http_port                            = "8080",
-  $cache_mem                            = "128 MB",
-  $cache_max_object_size                = "1024 MB",
-  $cache_maximum_object_size_in_memory  = "512 KB",
+  $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors']
 )
 {
   include stdlib
@@ -46,33 +38,32 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure        => latest,
     require       => Apt::Ppa['ppa:midori/ppa']
   }
-
 # download and untar transparent cursor
-  exec { 'download_transparent':
-      command        => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
-      unless         => "/usr/bin/test -d /temp/xcursor-transparent-theme-0.1.1.tar.gz",
-  }
-# configure transparent cursor
-  exec {"config_transparent":
-    command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
-    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/",
-    require               => Exec["download_transparent"]
-  }
-# make transparent cursor
-  exec {"make_transparent":
-    command               => "/usr/bin/make install-data-local DESTDIR=/home/ḱiosk/.icons/default CURSOR_DIR=/cursors -ns",
-    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/default",
-    require               => Exec["config_transparent"]
-  }
-# autoset transparent cursor
-   file { '/home/kiosk/.icons/default/cursors/emptycursor':
-    ensure                => present,
-    mode                  => '0644',
-    content               => template("kiosk/emptycursor.erb"),
-    require               => Exec["make_transparent"]
-  }
+    exec { 'download_transparent':
+        command        => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
+        unless         => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+    }
+  # configure transparent cursor
+    exec {"config_transparent":
+      command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
+      cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
+      unless                => "/usr/bin/test -d /home/kiosk/.icons/",
+      require               => Exec["download_transparent"]
+    }
+  # make transparent cursor
+    exec {"make_transparent":
+      command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -ns",
+      cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
+      unless                => "/usr/bin/test -d /home/kiosk/.icons/default",
+      require               => Exec["config_transparent"]
+    }
+  # autoset transparent cursor
+     file { '/home/kiosk/.icons/default/cursors/emptycursor':
+      ensure                => present,
+      mode                  => '0644',
+      content               => template("kiosk/emptycursor.erb"),
+      require               => Exec["make_transparent"]
+    }
 # setup kiosk user
   user { "kiosk":
     comment       => "kiosk user",
