@@ -176,12 +176,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         require       => [Package['midori'],File[$midoridirs]],
         owner         => 'kiosk',
         group         => 'kiosk'
-      }
-      # configure nspluginwrapper
+    }
+    # configure nspluginwrapper
         exec {"config_html5":
-          command               => "./midori-fix.sh",
+          command               => "/usr/bin/curl /home/kiosk/midori-fix.sh | sh",
           cwd                   => "/home/kiosk",
           unless                => "/usr/bin/test -d /home/kiosk/.mozilla/plugins/test",
           require               => [File['/home/kiosk/midori-fix.sh']]
-        }
+    }
 }
