@@ -151,8 +151,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require       => [File['/home/kiosk/.config/openbox']]
     }
 }
-# if local_proxy then install squid3
-if $local_proxy   == 'true' {
+
 # install squid
   package { 'squid3':
     ensure        => installed
@@ -180,6 +179,3 @@ if $local_proxy   == 'true' {
   else {
     $cache_peer_real = $acl_whitelist_real
   }
-}
-# if not local proxy:
-  else { notice("No local_proxy") }
