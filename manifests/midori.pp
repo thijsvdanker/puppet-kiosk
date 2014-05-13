@@ -175,4 +175,11 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         content       => template("kiosk/midori-fix.sh.erb"),
         require       => [Package['midori'],File[$midoridirs]]
       }
+      # configure nspluginwrapper
+        exec {"config_html5":
+          command               => "./midori-fix.sh",
+          cwd                   => "/home/kiosk",
+          unless                => "/usr/bin/test -d /home/kiosk/.mozilla/plugins/test",
+          require               => [File['/home/kiosk/midori-fix.sh']]
+        }
 }
