@@ -15,7 +15,6 @@ class kiosk::midori(
   $packages                             = ['xorg','openbox','squid3'],
   $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
-  $local_proxy                          = "true",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = [".naturalis.nl/nl/het-museum/agenda/",".naturalis.nl/media",".naturalis.nl/static/*"],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -60,7 +59,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   }
 # make transparent cursor
   exec {"make_transparent":
-    command               => "/usr/bin/make install-data-local DESTDIR=/home/ḱiosk/.icons/default CURSOR_DIR=/cursors -ns",
+    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -ns",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
     unless                => "/usr/bin/test -f /home/kiosk/.icons/default",
     require               => Exec["config_transparent"]
