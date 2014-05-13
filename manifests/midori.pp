@@ -12,7 +12,7 @@
 #
 
 class kiosk::midori(
-  $packages                             = ['xorg','openbox','squid3'],
+  $packages                             = ['xorg','openbox','squid3','build-essential'],
   $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/home/kiosk/.mozilla/','/home/kiosk/.mozilla/plugins/'],
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -47,6 +47,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   exec { 'download_transparent':
       command        => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
       unless         => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+      require        => [Package[$packages]]
   }
 # configure transparent cursor
   exec {"config_transparent":
