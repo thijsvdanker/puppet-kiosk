@@ -11,4 +11,4 @@
 # Copyright 2014
 #
 
-class kiosk()
+class kiosk{}
