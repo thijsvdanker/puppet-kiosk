@@ -161,9 +161,9 @@ common::directory_structure{ "/data/kiosk/${applet_name}":
   file {"/data/kiosk/${applet_name}/${applet_name}.zip":
     source        => "puppet:///modules/kiosk/${applet_name}.zip",
     ensure        => "present",
-    mode          => "0644"
-    owner         => "kiosk"
-    group         => "kiosk"
+    mode          => "755",
+    owner         => "kiosk",
+    group         => "kiosk",
     require       => Common::Directory_structure["/data/kiosk/${applet_name}"]
   }
 # unzip java applet
