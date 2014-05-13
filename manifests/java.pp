@@ -15,7 +15,7 @@ class kiosk::java(
   $mode                                 = "java",
   $packages                             = ['xorg','openbox','openjdk-7-jre','unclutter','p7zip-full'],
   $extractpassword                      = undef,
-  $applet_name                          > undef,
+  $applet_name                          = undef,
   $interactive_name                     = undef,
   $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $local_proxy                          = "true",
