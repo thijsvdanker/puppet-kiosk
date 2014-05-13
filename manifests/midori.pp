@@ -24,8 +24,7 @@ class kiosk::midori(
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB"
 )
-{
-  include stdlib
+ { include stdlib
 # install packages
   package { $packages:
     ensure        => installed
@@ -148,7 +147,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [File['/home/kiosk/.config/openbox']]
     }
-}
 # install squid
   package { 'squid3':
     ensure        => installed
@@ -176,3 +174,4 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   else {
     $cache_peer_real = $acl_whitelist_real
   }
+}
