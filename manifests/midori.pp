@@ -54,14 +54,14 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   exec {"config_transparent":
     command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/",
+    unless                => "/usr/bin/test -d /home/kiosk/.icons/",
     require               => Exec["download_transparent"]
   }
 # make transparent cursor
   exec {"make_transparent":
     command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -ns",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/default",
+    unless                => "/usr/bin/test -d /home/kiosk/.icons/default",
     require               => Exec["config_transparent"]
   }
 # autoset transparent cursor
