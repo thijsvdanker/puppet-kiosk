@@ -17,6 +17,7 @@ class kiosk::midori(
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
+  $acl_whitelist_real                  = undef,
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $cache_peer                           = ['.naturalis.nl/nl/het-museum/agenda/'],
   $http_port                            = "8080",
