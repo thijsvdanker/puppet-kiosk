@@ -29,6 +29,7 @@ class kiosk::java(
   $cache_maximum_object_size_in_memory  = "512 KB",
 )
 {
+  include stdlib
 # install packages
   package { $packages:
     ensure        => installed
