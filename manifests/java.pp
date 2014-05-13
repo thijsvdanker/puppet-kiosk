@@ -13,7 +13,7 @@
 
 class kiosk::java(
   $mode                                 = "java",
-  $packages                             = ['xorg','openbox','openjdk-7-jre','unclutter','p7zip-full'],
+  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $interactive_name                     = undef,
