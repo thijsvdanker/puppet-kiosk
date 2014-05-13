@@ -171,9 +171,11 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     # improve scrollbar
       file { '/home/kiosk/midori-fix.sh':
         ensure        => present,
-        mode          => '0644',
+        mode          => '0755',
         content       => template("kiosk/midori-fix.sh.erb"),
-        require       => [Package['midori'],File[$midoridirs]]
+        require       => [Package['midori'],File[$midoridirs]],
+        owner         => 'kiosk',
+        group         => 'kiosk'
       }
       # configure nspluginwrapper
         exec {"config_html5":
