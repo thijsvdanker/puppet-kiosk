@@ -147,10 +147,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [File['/home/kiosk/.config/openbox']]
     }
-# install squid
-  package { 'squid3':
-    ensure        => installed
-  }
 # ensure squid is running
   service { 'squid3':
     enable        => true,
