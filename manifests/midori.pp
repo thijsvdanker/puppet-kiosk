@@ -17,7 +17,6 @@ class kiosk::midori(
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
-  $acl_whitelist_real                  = undef,
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $cache_peer                           = ['.naturalis.nl/nl/het-museum/agenda/'],
   $http_port                            = "8080",
@@ -147,19 +146,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content       => template("kiosk/openbox-autostart.sh.erb"),
     require       => [File['/home/kiosk/.config/openbox']]
     }
-# ensure squid is running
-  service { 'squid3':
-    enable        => true,
-    ensure        => 'running',
-    require       => File['/etc/squid3/squid.conf']
-  }
-# squid proxy config
-  file { '/etc/squid3/squid.conf':
-    ensure        => present,
-    mode          => '0644',
-    content       => template("kiosk/squid.conf.erb"),
-    require       => [Package[$packages]]
-  }
 # make whitelist usable with regex
   $acl_whitelist_real = join($acl_whitelist,'|')
   notify {$acl_whitelist_real :}
@@ -171,4 +157,17 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   else {
     $cache_peer_real = $acl_whitelist_real
   }
+  # ensure squid is running
+    service { 'squid3':
+      enable        => true,
+      ensure        => 'running',
+      require       => File['/etc/squid3/squid.conf']
+    }
+  # squid proxy config
+    file { '/etc/squid3/squid.conf':
+      ensure        => present,
+      mode          => '0644',
+      content       => template("kiosk/squid.conf.erb"),
+      require       => [Package[$packages]]
+    }
 }
