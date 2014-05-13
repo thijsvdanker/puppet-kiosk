@@ -12,21 +12,21 @@
 #
 
 class kiosk::java(
-  $mode                                 = "undef",
-  $packages                             = "undef",
-  $midoridirs                           = "undef",
-  $local_proxy                          = "undef",
-  $http_port                            = "undef",
-  $cache_mem                            = "undef",
-  $cache_max_object_size                = "undef",
-  $cache_maximum_object_size_in_memory  = "undef",
-  $homepage                             = "undef",
-  $acl_whitelist                        = "undef",
-  $deny_info                            = "undef",
-  $cache_peer                           = "undef",
-  $extractpassword                      = "undef",
-  $applet_name                          = "undef",
-  $interactive_name                     = "undef"
+  $mode                                 = undef,
+  $packages                             = undef,
+  $midoridirs                           = undef,
+  $local_proxy                          = undef,
+  $http_port                            = undef,
+  $cache_mem                            = undef,
+  $cache_max_object_size                = undef,
+  $cache_maximum_object_size_in_memory  = undef,
+  $homepage                             = undef,
+  $acl_whitelist                        = undef,
+  $deny_info                            = undef,
+  $cache_peer                           = undef,
+  $extractpassword                      = undef,
+  $applet_name                          = undef,
+  $interactive_name                     = undef
 )
 {
 # install packages
