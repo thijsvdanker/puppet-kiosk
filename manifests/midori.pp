@@ -159,12 +159,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content       => template("kiosk/squid.conf.erb"),
     require       => [Package[$packages]]
   }
-
 # make whitelist usable with regex
   $acl_whitelist_real = join($acl_whitelist,'|')
 # if cache_peer not set, use whitelist for caching
   if ($cache_peer) {
     $cache_peer_real = $cache_peer
+    notify {$cache_peer_real :}
   }
   else {
     $cache_peer_real = $acl_whitelist_real
