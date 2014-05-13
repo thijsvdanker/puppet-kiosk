@@ -162,7 +162,7 @@ common::directory_structure{ "/data/kiosk/${applet_name}":
     source        => "puppet:///modules/kiosk/${applet_name}.zip",
     ensure        => "present",
     mode          => "0644"
-    user          => "kiosk"
+    owner         => "kiosk"
     group         => "kiosk"
     require       => Common::Directory_structure["/data/kiosk/${applet_name}"]
   }
