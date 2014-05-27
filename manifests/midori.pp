@@ -12,7 +12,7 @@
 #
 
 class kiosk::midori(
-  $packages                             = ['xorg','openbox','squid3','build-essential'],
+  $packages                             = ['xorg','openbox','squid3','build-essential', 'nspluginwrapper'],
   $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/home/kiosk/.mozilla/','/home/kiosk/.mozilla/plugins/'],
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
