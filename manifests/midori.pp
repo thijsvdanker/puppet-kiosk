@@ -50,19 +50,19 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require        => [Package[$packages]]
   }
 # configure transparent cursor
-  exec {"config_transparent":
-    command               => "/tmp/xcursor-transparent-theme-0.1.1/configure",
+  exec {"make_transparent":
+    command               => "cd /tmp/xcursor-transparent-theme-0.1.1/ && ./configure && cd /tmp/xcursor-transparent-theme-0.1.1/cursors/ && /usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
     unless                => "/usr/bin/test -d /home/kiosk/.icons/",
     require               => Exec["download_transparent"]
   }
 # make transparent cursor
-  exec {"make_transparent":
-    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors",
-    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-    unless                => "/usr/bin/test -d /home/kiosk/.icons/default",
-    require               => Exec["config_transparent"]
-  }
+#  exec {"make_transparent":
+#    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors",
+#    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
+#    unless                => "/usr/bin/test -d /home/kiosk/.icons/default",
+#    require               => Exec["config_transparent"]
+#  }
 # autoset transparent cursor
    file { '/home/kiosk/.icons/default/cursors/emptycursor':
     ensure                => present,
