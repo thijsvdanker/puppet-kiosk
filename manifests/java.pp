@@ -49,7 +49,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     command               => "configure && cd cursors && make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors",
     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
     path                  => "/usr/bin/",
-    unless                => "/usr/bin/test -d /home/kiosk/.icons/",
+    unless                => "/usr/bin/test -d /home/kiosk/.icons/default/cursors/transp",
     require               => Exec["download_transparent"]
   }
 # autoset transparent cursor
