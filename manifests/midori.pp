@@ -163,15 +163,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       content       => template("kiosk/squid.conf.erb"),
       require       => [Package[$packages]]
     }
-# improve scrollbar
-      file { '/home/kiosk/midori-fix.sh':
-        ensure        => present,
-        mode          => '0755',
-        content       => template("kiosk/midori-fix.sh.erb"),
-        require       => [Package['midori'],File[$midoridirs]],
-        owner         => 'kiosk',
-        group         => 'kiosk'
-    }
 # download and untar html5 fix
 #      exec { 'download_fix':
 #          command        => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /home/kiosk/.mozilla/plugins/",
