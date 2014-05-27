@@ -12,7 +12,7 @@
 #
 
 class kiosk::midori(
-  $packages                             = ['xorg','openbox','squid3','build-essential', 'nspluginwrapper'],
+  $packages                             = ['xorg','openbox','squid3','build-essential', 'nspluginwrapper','ia32-libs'],
   $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/home/kiosk/.mozilla/','/home/kiosk/.mozilla/plugins/'],
   $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -180,10 +180,24 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         group         => 'kiosk'
     }
     # configure nspluginwrapper
-        exec {"config_html5":
-          command               => "/usr/bin/curl /home/kiosk/midori-fix.sh | sh",
-          cwd                   => "/home/kiosk",
-          unless                => "/usr/bin/test -d /home/kiosk/.mozilla/plugins/test",
-          require               => [File['/home/kiosk/midori-fix.sh']]
-    }
+    #    exec {"config_html5":
+    #      command               => "/usr/bin/curl /home/kiosk/midori-fix.sh | sh",
+    #      cwd                   => "/home/kiosk",
+  #        unless                => "/usr/bin/test -d /home/kiosk/.mozilla/plugins/test",
+  #        require               => [File['/home/kiosk/midori-fix.sh']]
+  #  }
+    # download and untar html5 fix
+      exec { 'download_fix':
+          command        => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /tmp",
+          unless         => "/usr/bin/test -f /tmp/install_flash_player_11_linux.i386.tar.gz",
+          require        => [Package[$packages]]
+      }
+    # configure transparent cursor
+      exec {"make_fix":
+        command               => "mv libflashplayer.so /home/kiosk/.mozilla/plugins/libflashplayer.so",
+        cwd                   => "/tmp/install_flash_player_11_linux.i386",
+        path                  => "/usr/bin/",
+        unless                => "/usr/bin/test -d /home/kiosk/.mozilla/plugins/libflashplayer.so",
+        require               => Exec["download_fix"]
+      }
 }
