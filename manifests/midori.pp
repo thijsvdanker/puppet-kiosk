@@ -57,13 +57,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     unless                => "/usr/bin/test -d /home/kiosk/.icons/",
     require               => Exec["download_transparent"]
   }
-# make transparent cursor
-#  exec {"make_transparent":
-#    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors",
-#    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-#    unless                => "/usr/bin/test -d /home/kiosk/.icons/default",
-#    require               => Exec["config_transparent"]
-#  }
 # autoset transparent cursor
    file { '/home/kiosk/.icons/default/cursors/emptycursor':
     ensure                => present,
@@ -163,14 +156,14 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       ensure        => 'running',
       require       => File['/etc/squid3/squid.conf']
     }
-  # squid proxy config
+# squid proxy config
     file { '/etc/squid3/squid.conf':
       ensure        => present,
       mode          => '0644',
       content       => template("kiosk/squid.conf.erb"),
       require       => [Package[$packages]]
     }
-    # improve scrollbar
+# improve scrollbar
       file { '/home/kiosk/midori-fix.sh':
         ensure        => present,
         mode          => '0755',
@@ -179,10 +172,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         owner         => 'kiosk',
         group         => 'kiosk'
     }
-    # download and untar html5 fix
-      exec { 'download_fix':
-          command        => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /home/kiosk/.mozilla/plugins/",
-          unless         => "/usr/bin/test -f /home/kiosk/.mozilla/plugins/libflashplayer.so",
-          require        => [Package[$packages]]
-      }
+# download and untar html5 fix
+#      exec { 'download_fix':
+#          command        => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /home/kiosk/.mozilla/plugins/",
+#          unless         => "/usr/bin/test -f /home/kiosk/.mozilla/plugins/libflashplayer.so",
+#          require        => [Package[$packages]]
+#      }
 }
