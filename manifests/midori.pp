@@ -189,7 +189,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     # download and untar html5 fix
       exec { 'download_fix':
           command        => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /home/kiosk/.mozilla/plugins/",
-          unless         => "/usr/bin/test -f /tmp/install_flash_player_11_linux.i386.tar.gz",
+          unless         => "/usr/bin/test -f /home/kiosk/.mozilla/plugins/libflashplayer.so",
           require        => [Package[$packages]]
       }
 }
