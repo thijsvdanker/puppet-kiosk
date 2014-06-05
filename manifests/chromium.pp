@@ -116,6 +116,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [User['kiosk']]
   }
 # improve scrollbar
+  file { '/home/kiosk/.config/chromium/User Stylesheets/manifest.json':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("kiosk/chromium-manifest.erb"),
+    require               => [Package['chromium-browser'],File[$dirs]]
+  }
   file { '/home/kiosk/.config/chromium/User Stylesheets/Custom.css':
     ensure                => present,
     mode                  => '0644',
