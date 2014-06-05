@@ -109,14 +109,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644'
   }
 # set chromium config
-file_line { 'force_gpu':
-  path                    => '/home/kiosk/.config/chromium/Local\ State',
-  onlyif                  => '/usr/bin/test -f /home/kiosk/.config/chromium/Local\ State',
-  line                    => 'enabled_labs_experiments": [  ],',
-  match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
-  require                 => [Package['chromium-browser'],File[$dirs]]
-}
-
+  file_line { 'force_gpu':
+    path                    => '/home/kiosk/.config/chromium/Local\ State',
+    line                    => 'enabled_labs_experiments": [  ],',
+    match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
+    require                 => [Package['chromium-browser'],File[$dirs]]
+  }
 # improve scrollbar
   file { '/home/kiosk/.gtkrc-2.0':
     ensure                => present,
