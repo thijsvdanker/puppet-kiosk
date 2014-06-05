@@ -113,6 +113,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     require               => [User['kiosk']]
+  }
 # set chromium config
   file_line { 'force_gpu':
     path                  => '/home/kiosk/.config/chromium/Local State',
