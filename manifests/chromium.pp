@@ -13,7 +13,7 @@
 
 class kiosk::chromium(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
-  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/chromium/Default','/home/kiosk/.config/chromium/User Stylesheets','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/chromium/Default','/home/kiosk/.config/chromium/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $browser_path                         = "chromium-browser --proxy-server=http://localhost:8080 --kiosk --incognito http://html5test.com",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
@@ -115,20 +115,20 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/chromium-config.erb"),
     require               => [User['kiosk']]
   }
-  file { '/home/kiosk/.config/chromium/Default/Preferences':
-    ensure                => present,
-    mode                  => '0644',
-    content               => template("kiosk/chromium-config2.erb"),
-    require               => [User['kiosk']]
-  }
+#  file { '/home/kiosk/.config/chromium/Default/Preferences':
+#    ensure                => present,
+#    mode                  => '0644',
+#    content               => template("kiosk/chromium-config2.erb"),
+#    require               => [User['kiosk']]
+#  }
 # improve scrollbar
-  file { '/home/kiosk/.config/chromium/User Stylesheets/manifest.json':
+  file { '/home/kiosk/.config/chromium/Default/Extensions/manifest.json':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-manifest.erb"),
     require               => [Package['chromium-browser'],File[$dirs]]
   }
-  file { '/home/kiosk/.config/chromium/User Stylesheets/Custom.css':
+  file { '/home/kiosk/.config/chromium/Default/Extensions/Custom.css':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-css.erb"),
