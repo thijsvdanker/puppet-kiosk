@@ -3,11 +3,11 @@ puppet-kiosk
 Puppet module to install a simple kiosk browser.It installs bare Xorg, Openbox window manager and:
 
 * kiosk::midori =
-Midori browser with mouse gestures and transparent mouse cursor, together with Squid3 proxy.
+Midori browser with mouse gestures and transparent mouse cursor, together with Squid3 local proxy.
 * kiosk::java =
 Midori browser with mouse gestures and transparent mouse cursor, together with java applet.
 * kiosk::chromium =
-Chromium browser gpu forced and with transparent mouse cursor, made for html5.
+Chromium browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5.
 
 Parameters
 -------------

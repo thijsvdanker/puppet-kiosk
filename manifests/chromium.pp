@@ -108,12 +108,17 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     group                 => 'kiosk',
     mode                  => '0644'
   }
+# ensure chromium config file
+  file { '/home/kiosk/.config/chromium/Local State':
+    ensure                => present,
+    mode                  => '0644',
+    require               => [User['kiosk']]
 # set chromium config
   file_line { 'force_gpu':
-    path                    => '/home/kiosk/.config/chromium/Local State',
-    line                    => '"browser": { "enabled_labs_experiments": [ "ignore-gpu-blacklist" ], "last_redirect_origin": "" },',
-    match                   => '^"browser.*$',
-    require                 => [Package['chromium-browser'],File[$dirs]]
+    path                  => '/home/kiosk/.config/chromium/Local State',
+    line                  => '"browser": { "enabled_labs_experiments": [ "ignore-gpu-blacklist" ], "last_redirect_origin": "" },',
+    match                 => '^"browser.*$',
+    require               => [Package['chromium-browser'],File['/home/kiosk/.config/chromium/Local State']]
   }
 # improve scrollbar
   file { '/home/kiosk/.gtkrc-2.0':
