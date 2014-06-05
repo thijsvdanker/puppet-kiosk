@@ -112,7 +112,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 file_line { 'force_gpu':
   path                    => '/home/kiosk/.config/chromium/Local State',
   ensure                  => present,
-#  line                    => 'enabled_labs_experiments": [  ],',
+  line                    => 'enabled_labs_experiments": [  ],',
 #  match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
   require                 => [Package['chromium-browser'],File[$chromiumdirs]]
 }
