@@ -46,8 +46,6 @@ kiosk::chromium >
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB"
-)
-
 ```
 Limitations
 -------------
