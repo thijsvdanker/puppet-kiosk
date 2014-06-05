@@ -13,7 +13,7 @@
 
 class kiosk::chromium(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
-  $chromiumdirs                         = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/chromium/Default','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/chromium','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $chromiumdirs                         = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $chromium_path                        = "chromium-browser --kiosk --incognito http://html5test.com&nohtml5=1",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
@@ -109,7 +109,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644'
   }
 # set chromium config
-#  file { '/home/kiosk/.config/chromium/Default/Preferences':
+#  file { '/home/kiosk/.config/chromium/Local State':
 #    ensure                => present,
 #    mode                  => '0644',
 #    content               => template("kiosk/chromium-config.erb"),
