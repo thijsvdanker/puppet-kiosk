@@ -113,7 +113,7 @@ file_line { 'force_gpu':
   path                    => '/home/kiosk/.config/chromium/Local State',
   ensure                  => present,
   line                    => 'enabled_labs_experiments": [  ],',
-#  match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
+  match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
   require                 => [Package['chromium-browser'],File[$chromiumdirs]]
 }
 
