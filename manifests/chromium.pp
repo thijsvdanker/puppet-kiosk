@@ -115,13 +115,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/chromium-config.erb"),
     require               => [User['kiosk']]
   }
-# set chromium config
-#  file_line { 'force_gpu':
-#    path                  => '/home/kiosk/.config/chromium/Local State',
-#    line                  => '"browser": { "enabled_labs_experiments": [ "ignore-gpu-blacklist" ], "last_redirect_origin": "" },',
-#    match                 => '^"browser.*$',
-#    require               => [Package['chromium-browser'],File['/home/kiosk/.config/chromium/Local State']]
-#  }
 # improve scrollbar
   file { '/home/kiosk/.config/chromium/User Stylesheets/Custom.css':
     ensure                => present,
