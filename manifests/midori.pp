@@ -13,8 +13,8 @@
 
 class kiosk::midori(
   $packages                             = ['xorg','openbox','squid3','build-essential', 'nspluginwrapper','ia32-libs'],
-  $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/home/kiosk/.mozilla/','/home/kiosk/.mozilla/plugins/'],
-  $midori_path                          = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/home/kiosk/.mozilla/','/home/kiosk/.mozilla/plugins/'],
+  $browser_path                         = "midori -i 300 -e Fullscreen -c /home/kiosk/.config/midori",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -101,7 +101,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [User['kiosk']]
   }
 # make userdirs
-  file { $midoridirs:
+  file { $dirs:
     ensure                => 'directory',
     require               => User['kiosk'],
     owner                 => 'kiosk',
@@ -113,14 +113,14 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/midori-config.erb"),
-    require               => [Package['midori'],File[$midoridirs]]
+    require               => [Package['midori'],File[$dirs]]
   }
 # set mouse gestures
   file { '/home/kiosk/.config/midori/extensions/libmouse-gestures.so/config':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/mousegestures-config.erb"),
-    require               => [Package['midori'],File[$midoridirs]],
+    require               => [Package['midori'],File[$dirs]],
     owner                 => 'kiosk',
     group                 => 'kiosk'
   }
@@ -129,7 +129,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/mousegestures-gestures.erb"),
-    require               => [Package['midori'],File[$midoridirs]],
+    require               => [Package['midori'],File[$dirs]],
     owner                 => 'kiosk',
     group                 => 'kiosk'
   }
@@ -138,7 +138,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/.gtkrc-2.0.erb"),
-    require               => [Package['midori'],File[$midoridirs]]
+    require               => [Package['midori'],File[$dirs]]
   }
 # autostart midori
   file { '/home/kiosk/.config/openbox/autostart.sh':
@@ -169,10 +169,4 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/squid.conf.erb"),
     require               => [Package[$packages]]
     }
-# download and untar html5 fix
-# exec { 'download_fix':
-#   command               => "/usr/bin/curl http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.310/install_flash_player_11_linux.i386.tar.gz -o /tmp/install_flash_player_11_linux.i386.tar.gz && /bin/tar -xf /tmp/install_flash_player_11_linux.i386.tar.gz -C /home/kiosk/.mozilla/plugins/",
-#   unless                => "/usr/bin/test -f /home/kiosk/.mozilla/plugins/libflashplayer.so",
-#   require               => [Package[$packages]]
-#   }
 }

@@ -13,8 +13,8 @@
 
 class kiosk::chromium(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
-  $chromiumdirs                         = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $chromium_path                        = "chromium-browser --kiosk --incognito http://html5test.com&nohtml5=1",
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $browser_path                         = "chromium-browser --kiosk --incognito http://html5test.com",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -101,7 +101,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [User['kiosk']]
   }
 # make userdirs
-  file { $chromiumdirs:
+  file { $dirs:
     ensure                => 'directory',
     require               => User['kiosk'],
     owner                 => 'kiosk',
@@ -114,7 +114,7 @@ file_line { 'force_gpu':
   ensure                  => present,
   line                    => 'enabled_labs_experiments": [  ],',
   match                   => 'enabled_labs_experiments": [ "ignore-gpu-blacklist" ],',
-  require                 => [Package['chromium-browser'],File[$chromiumdirs]]
+  require                 => [Package['chromium-browser'],File[$dirs]]
 }
 
 # improve scrollbar
@@ -122,7 +122,7 @@ file_line { 'force_gpu':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/.gtkrc-2.0.erb"),
-    require               => [Package['chromium-browser'],File[$chromiumdirs]]
+    require               => [Package['chromium-browser'],File[$dirs]]
   }
 # autostart chromium
   file { '/home/kiosk/.config/openbox/autostart.sh':

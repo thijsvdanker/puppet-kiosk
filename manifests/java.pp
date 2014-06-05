@@ -16,7 +16,7 @@ class kiosk::java(
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $interactive_name                     = undef,
-  $midoridirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors']
+  $dirs                           = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors']
 )
 {
   include stdlib
@@ -96,7 +96,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [User['kiosk']]
   }
 # make userdirs
-  file { $midoridirs:
+  file { $dirs:
     ensure                => 'directory',
     require               => User['kiosk'],
     owner                 => 'kiosk',
@@ -108,14 +108,14 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/midori-config.erb"),
-    require               => [Package['midori'],File[$midoridirs]]
+    require               => [Package['midori'],File[$dirs]]
   }
 # set mouse gestures
   file { '/home/kiosk/.config/midori/extensions/libmouse-gestures.so/config':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/mousegestures-config.erb"),
-    require               => [Package['midori'],File[$midoridirs]],
+    require               => [Package['midori'],File[$dirs]],
     owner                 => 'kiosk',
     group                 => 'kiosk'
   }
@@ -124,7 +124,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/mousegestures-gestures.erb"),
-    require               => [Package['midori'],File[$midoridirs]],
+    require               => [Package['midori'],File[$dirs]],
     owner                 => 'kiosk',
     group                 => 'kiosk'
   }
@@ -133,7 +133,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/.gtkrc-2.0.erb"),
-    require               => [Package['midori'],File[$midoridirs]]
+    require               => [Package['midori'],File[$dirs]]
   }
 # autostart midori
     file { '/home/kiosk/.config/openbox/autostart.sh':
