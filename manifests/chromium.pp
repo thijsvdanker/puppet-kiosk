@@ -13,8 +13,8 @@
 
 class kiosk::chromium(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
-  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $browser_path                         = "chromium-browser --kiosk --incognito http://html5test.com",
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/chromium/User Stylesheets/','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $browser_path                         = "chromium-browser --proxy-server=http://localhost:8080 --kiosk --incognito http://html5test.com",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -123,10 +123,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #    require               => [Package['chromium-browser'],File['/home/kiosk/.config/chromium/Local State']]
 #  }
 # improve scrollbar
-  file { '/home/kiosk/.gtkrc-2.0':
+  file { '/home/kiosk/.config/chromium/User Stylesheets/Custom.css':
     ensure                => present,
     mode                  => '0644',
-    content               => template("kiosk/.gtkrc-2.0.erb"),
+    content               => template("kiosk/chromium-css.erb"),
     require               => [Package['chromium-browser'],File[$dirs]]
   }
 # autostart chromium
