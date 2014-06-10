@@ -150,13 +150,13 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-manifest.erb"),
-    require               => [Package['google-chrome'],File[$dirs]]
+    require               => [Package['google-chrome-stable'],File[$dirs]]
   }
   file { '/home/kiosk/.config/google-chrome/Default/Extensions/Custom.css':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-css.erb"),
-    require               => [Package['google-chrome'],File[$dirs]]
+    require               => [Package['google-chrome-stable'],File[$dirs]]
   }
 # autostart chromium
   file { '/home/kiosk/.config/openbox/autostart.sh':
