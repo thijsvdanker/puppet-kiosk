@@ -35,15 +35,24 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     }
   )
 # add chromium key
-  apt::ppa { 'ppa:chromium-daily/stable':
+#  apt::ppa { 'ppa:chromium-daily/stable':
+#    require               => File['/etc/apt/sources.list.d']
+#  }
+# install latest chromium browser
+#  package { 'chromium-browser':
+#    ensure                => latest,
+#    require               => Apt::Ppa['ppa:chromium-daily/stable']
+#  }
+# add chrome key
+  exec { 'install chrome'
+    command               => "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
     require               => File['/etc/apt/sources.list.d']
   }
-# install latest chromium browser
-  package { 'chromium-browser':
+  install latest chrome browser
+  package { 'google-chrome-stable':
     ensure                => latest,
-    require               => Apt::Ppa['ppa:chromium-daily/stable']
+    require               => Exec["install chrome"]
   }
-  # older is 'ppa:a-v-shkop/chromium'
 # download and untar transparent cursor
   exec { 'download_transparent':
     command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
