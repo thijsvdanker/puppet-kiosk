@@ -13,8 +13,8 @@
 
 class kiosk::chromium(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
-  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/chromium/Default','/home/kiosk/.config/chromium/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $browser_path                         = "chromium-browser --proxy-server=http://localhost:8080 --kiosk --incognito http://html5test.com",
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $browser_path                         = "google-chrome --proxy-server=http://localhost:8080 --kiosk http://html5test.com",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -44,7 +44,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #    require               => Apt::Ppa['ppa:chromium-daily/stable']
 #  }
 # add chrome key
-  exec { 'install chrome'
+  exec { 'install chrome':
     command               => "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
     require               => File['/etc/apt/sources.list.d']
   }
@@ -118,8 +118,8 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     group                 => 'kiosk',
     mode                  => '0644'
   }
-# ensure chromium config file
-  file { '/home/kiosk/.config/chromium/Local State':
+# ensure google-chrome config file
+  file { '/home/kiosk/.config/google-chrome/Local State':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-config.erb"),
@@ -132,17 +132,17 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #    require               => [User['kiosk']]
 #  }
 # improve scrollbar
-  file { '/home/kiosk/.config/chromium/Default/Extensions/manifest.json':
+  file { '/home/kiosk/.config/google-chrome/Default/Extensions/manifest.json':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-manifest.erb"),
-    require               => [Package['chromium-browser'],File[$dirs]]
+    require               => [Package['google-chrome'],File[$dirs]]
   }
-  file { '/home/kiosk/.config/chromium/Default/Extensions/Custom.css':
+  file { '/home/kiosk/.config/google-chrome/Default/Extensions/Custom.css':
     ensure                => present,
     mode                  => '0644',
     content               => template("kiosk/chromium-css.erb"),
-    require               => [Package['chromium-browser'],File[$dirs]]
+    require               => [Package['google-chrome'],File[$dirs]]
   }
 # autostart chromium
   file { '/home/kiosk/.config/openbox/autostart.sh':
