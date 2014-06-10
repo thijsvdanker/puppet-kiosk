@@ -43,15 +43,29 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #    ensure                => latest,
 #    require               => Apt::Ppa['ppa:chromium-daily/stable']
 #  }
-# add chrome key
-  exec { 'install chrome':
-    command               => "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add - && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
-    require               => File['/etc/apt/sources.list.d']
+# install google-chrome
+  file { "/etc/apt/sources.list.d/google.list":
+    owner                 => "kiosk",
+    group                 => "kiosk",
+    mode                  => 444,
+    source                => "puppet:///modules/google-chrome/google.list",
+    notify                => Exec["Google apt-key"],
   }
-  install latest chrome browser
-  package { 'google-chrome-stable':
+  # Add Google's apt-key.
+  exec { "Google apt-key":
+    command               => "/usr/bin/wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | /usr/bin/apt-key add -",
+    refreshonly           => true,
+    notify                => Exec["apt-get update"],
+  }
+  ## refresh:
+  exec { "apt-get update":
+    command               => "/usr/bin/apt-get update",
+    refreshonly           => true,
+  }
+  # Install latest stable
+  package { "google-chrome-stable":
     ensure                => latest,
-    require               => Exec["install chrome"]
+    require               => [ Exec["apt-get update"]],
   }
 # download and untar transparent cursor
   exec { 'download_transparent':
