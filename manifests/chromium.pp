@@ -35,7 +35,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     }
   )
 # add chromium key
-  apt::ppa { 'ppa:a-v-shkop/chromium':
+  apt::ppa { 'ppa:chromium-daily/stable':
     require               => File['/etc/apt/sources.list.d']
   }
 # install latest chromium browser
