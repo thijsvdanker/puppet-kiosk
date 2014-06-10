@@ -41,8 +41,9 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 # install latest chromium browser
   package { 'chromium-browser':
     ensure                => latest,
-    require               => Apt::Ppa['ppa:a-v-shkop/chromium']
+    require               => Apt::Ppa['ppa:chromium-daily/stable']
   }
+  # older is 'ppa:a-v-shkop/chromium'
 # download and untar transparent cursor
   exec { 'download_transparent':
     command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
