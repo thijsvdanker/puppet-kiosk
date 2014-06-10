@@ -45,7 +45,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #  }
 # add chrome key
   exec { 'install chrome':
-    command               => "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
+    command               => "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add - && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
     require               => File['/etc/apt/sources.list.d']
   }
   install latest chrome browser
