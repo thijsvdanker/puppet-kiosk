@@ -6,8 +6,8 @@ Puppet module to install a simple kiosk browser.It installs bare Xorg, Openbox w
 Midori browser with mouse gestures and transparent mouse cursor, together with Squid3 local proxy.
 * kiosk::java =
 Midori browser with mouse gestures and transparent mouse cursor, together with java applet.
-* kiosk::chromium =
-Chromium browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5.
+* kiosk::chrome =
+Chrome browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5.
 
 Parameters
 -------------
@@ -34,10 +34,10 @@ $applet_name                          = undef,
 $interactive_name                     = undef,
 $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/midori','/home/kiosk/.config/midori/extensions','/home/kiosk/.config/midori/extensions/libmouse-gestures.so','/home/kiosk/.config/openbox','/home/kiosk/.local/','/home/kiosk/.local/share/','/home/kiosk/.local/share/midori','/home/kiosk/.local/share/midori/styles','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors']
 
-kiosk::chromium >
+kiosk::chrome >
 $packages                             = ['xorg','openbox','squid3','build-essential'],
-$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/chromium','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-$browser_path                         = "chromium-browser --kiosk --incognito http://html5test.com",
+$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+$browser_path                         = "google-chrome --kiosk http://html5test.com",
 $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
 $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
 $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
