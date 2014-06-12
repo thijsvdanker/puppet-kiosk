@@ -183,7 +183,8 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [Package[$packages]]
     }
 # enable apache and php5 if needed
-  if($enable_apache) {
+  {
+    if($enable_apache) {
     $installed            = 'present',
     $enable               = 'true',
     $ensure               = 'running'
@@ -193,5 +194,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     $enable               = 'false',
     $ensure               = 'stopped'
   }
+}
 
 }
