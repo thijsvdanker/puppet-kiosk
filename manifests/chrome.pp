@@ -189,7 +189,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       ensure => present,
      }
     service { "apache2":
-      ensure      => present,
+      ensure      => running,
       enable      => true,
       require     => Package['apache2'],
       subscribe   => [
