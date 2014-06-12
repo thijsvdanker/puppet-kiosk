@@ -24,9 +24,9 @@ class kiosk::chrome(
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
   $enable_apache                        = "false"
-  $installed                            = undef,
-  $enable                               = undef,
-  $ensure                               = undef
+  $installed                            = "undef",
+  $enable                               = "undef",
+  $ensure                               = "undef"
 )
  { include stdlib
 # install packages
