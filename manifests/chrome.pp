@@ -215,7 +215,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
-        require               => Package['apache2']
+        require               => Common::Directory_structure["/var/www/"],
       }
       common::directory_structure{ "/var/www/":
         user                    => 'kiosk',
