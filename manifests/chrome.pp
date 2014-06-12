@@ -209,7 +209,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require => Package['apache2'],
     }
     # download test template
-      file {"/tmp/test-template.zip":
+      file {"/var/www/test-template.zip":
         source                => "puppet:///modules/kiosk/test-template.zip",
         ensure                => "present",
         mode                  => "755",
@@ -219,10 +219,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       }
     # unzip template
       exec {"unzip":
-        command               => "/usr/bin/7z x -aoa /tmp/test-template.zip",
-        cwd                   => "/var/www/html/",
+        command               => "/usr/bin/7z x -aoa test-template.zip",
+        cwd                   => "/var/www/",
         require               => Package['apache2'],
-        unless                => "/usr/bin/test -f /tmp/test-template.zip"
+        unless                => "/usr/bin/test -f /var/www/css/"
       }
   }
   else {
