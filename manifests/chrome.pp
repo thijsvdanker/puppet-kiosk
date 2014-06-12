@@ -208,6 +208,22 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       content  => template("kiosk/vhost.erb"),
       require => Package['apache2'],
     }
+    # download test template
+      file {"/var/www/html/test-template.zip":
+        source                => "puppet:///modules/kiosk/test-template.zip",
+        ensure                => "present",
+        mode                  => "755",
+        owner                 => "kiosk",
+        group                 => "kiosk",
+        require               => Common::Directory_structure["/var/www/html/"]
+      }
+    # unzip template
+      exec {"unzip":
+        command               => "/usr/bin/7z x -aoa /var/www/html/test-template.zip",
+        cwd                   => "/var/www/html/",
+        unless                => "/usr/bin/test -f /var/www/html/css/",
+        require               => Common::Directory_structure["/var/www/html/"]
+      }
   }
   else {
     notify{"Apache disabled": }
