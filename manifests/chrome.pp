@@ -14,7 +14,7 @@
 class kiosk::chrome(
   $packages                             = ['xorg','openbox','squid3','build-essential'],
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $browser_path                         = "google-chrome --touch-events --touch-scrolling-mode --async-touchmove --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --incognito --no-first-run --kiosk --homepage http://www.naturalis.nl/nl/het-museum/agenda/",
+  $browser_path                         = "google-chrome --touch-events --touch-scrolling-mode --sync-touchmove --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions --proxy-server=http://localhost:8080 --incognito --no-first-run --kiosk --homepage http://www.naturalis.nl/nl/het-museum/agenda/",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
   $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
