@@ -220,6 +220,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       common::directory_structure{ "/var/www/":
         user                    => 'kiosk',
         mode                    => '0755'
+      }
     # unzip template
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa test-template.zip",
