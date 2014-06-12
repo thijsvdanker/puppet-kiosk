@@ -24,7 +24,7 @@ class kiosk::chrome(
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
   $enable_apache                        = false,
-  $webpackages                          = ['apache2','php5','libapache2-mod-php5'],
+  $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
 )
  { include stdlib
 # install packages
@@ -209,20 +209,21 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require => Package['apache2'],
     }
     # download test template
-      file {"/var/www/html/test-template.zip":
+      file {"/tmp/test-template.zip":
         source                => "puppet:///modules/kiosk/test-template.zip",
         ensure                => "present",
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
-        require               => Common::Directory_structure["/var/www/html/"]
+        require               => Package['apache2']
       }
     # unzip template
       exec {"unzip":
-        command               => "/usr/bin/7z x -aoa /var/www/html/test-template.zip",
+        command               => "/usr/bin/7z x -aoa /tmp/test-template.zip",
         cwd                   => "/var/www/html/",
         unless                => "/usr/bin/test -f /var/www/html/css/",
-        require               => Common::Directory_structure["/var/www/html/"]
+        require               => Package['apache2']
+        unless                => "/usr/bin/test -f /tmp/test-template.zip",
       }
   }
   else {
