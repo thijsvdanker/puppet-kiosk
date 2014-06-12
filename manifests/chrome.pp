@@ -217,11 +217,14 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         group                 => "kiosk",
         require               => Package['apache2']
       }
+      common::directory_structure{ "/var/www/":
+        user                    => 'kiosk',
+        mode                    => '0755'
     # unzip template
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa test-template.zip",
         cwd                   => "/var/www/",
-        require               => Package['apache2'],
+        require               => Common::Directory_structure["/var/www/,
         unless                => "/usr/bin/test -f /var/www/css/"
       }
   }
