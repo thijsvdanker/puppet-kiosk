@@ -184,13 +184,13 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     }
 # if needed installs apache
   if ($enable_apache) {
-    $installed            = "present",
-    $enable               = "true",
+    $installed            = present
+    $enable               = true
     $ensure               = "running"
   }
   else {
-    $installed            = "absent",
-    $enable               = "false",
+    $installed            = absent
+    $enable               = false
     $ensure               = "stopped"
   }
   package { 'apache2','php5','libapache2-mod-php5':
