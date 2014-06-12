@@ -23,6 +23,7 @@ class kiosk::chrome(
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
+  $enable_apache                        = false,
 )
  { include stdlib
 # install packages
@@ -182,10 +183,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => [Package[$packages]]
     }
     # if cache_peer not set, use whitelist for caching
-      if ($cache_peer) {
-        $cache_peer_real = $cache_peer
+      if ($enable_apache) {
+
       }
       else {
-        $cache_peer_real = $acl_whitelist_real
+        
       }
 }
