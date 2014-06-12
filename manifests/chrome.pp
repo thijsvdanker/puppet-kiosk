@@ -23,7 +23,6 @@ class kiosk::chrome(
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
-
 )
  { include stdlib
 # install packages
@@ -182,18 +181,11 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/squid.conf.erb"),
     require               => [Package[$packages]]
     }
-# enable apache and php5 if needed
-  {
-    if($enable_apache) {
-    $installed            = 'present',
-    $enable               = 'true',
-    $ensure               = 'running'
-  }
-  else {
-    $installed            = 'absent',
-    $enable               = 'false',
-    $ensure               = 'stopped'
-  }
-}
-
+    # if cache_peer not set, use whitelist for caching
+      if ($cache_peer) {
+        $cache_peer_real = $cache_peer
+      }
+      else {
+        $cache_peer_real = $acl_whitelist_real
+      }
 }
