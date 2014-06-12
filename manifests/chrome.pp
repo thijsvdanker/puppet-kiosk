@@ -194,8 +194,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require     => Package['apache2'],
       subscribe   => [
                   File["/etc/apache2/mods-enabled/rewrite.load"],
-                  File["/etc/apache2/sites-available/default"],
-                  File["/etc/apache2/conf.d/phpmyadmin.conf"]
+                  File["/etc/apache2/sites-available/default"]
       ],
     }
     file { "/etc/apache2/mods-enabled/rewrite.load":
