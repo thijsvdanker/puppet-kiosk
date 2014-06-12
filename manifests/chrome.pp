@@ -221,8 +221,8 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa /tmp/test-template.zip",
         cwd                   => "/var/www/html/",
-        require               => Package['apache2']
-        unless                => "/usr/bin/test -f /tmp/test-template.zip",
+        require               => Package['apache2'],
+        unless                => "/usr/bin/test -f /tmp/test-template.zip"
       }
   }
   else {
