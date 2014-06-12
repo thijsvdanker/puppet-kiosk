@@ -182,11 +182,39 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/squid.conf.erb"),
     require               => [Package[$packages]]
     }
-    # if cache_peer not set, use whitelist for caching
-      if ($enable_apache) {
+# if needed installs apache
+  if ($enable_apache) {
+    $installed            = "present",
+    $enable               = "true",
+    $ensure               = "running"
+  }
+  else {
+    $installed            = "absent",
+    $enable               = "false",
+    $ensure               = "stopped"
+  }
+  package { 'apache2','php5','libapache2-mod-php5':
+    ensure => $installed,
+   }
+  service { "apache2":
+    ensure      => $ensure,
+    enable      => $enable,
+    require     => Package['apache2'],
+    subscribe   => [
+                File["/etc/apache2/mods-enabled/rewrite.load"],
+                File["/etc/apache2/sites-available/default"],
+                File["/etc/apache2/conf.d/phpmyadmin.conf"]
+    ],
+  }
+  file { "/etc/apache2/mods-enabled/rewrite.load":
+    ensure  => link,
+    target  => "/etc/apache2/mods-available/rewrite.load",
+    require => Package['apache2'],
+  }
 
-      }
-      else {
-        
-      }
+  file { "/etc/apache2/sites-available/default":
+    ensure  => present,
+    source  => "/vagrant/puppet/templates/vhost",
+    require => Package['apache2'],
+  }
 }
