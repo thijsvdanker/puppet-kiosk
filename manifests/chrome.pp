@@ -209,7 +209,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require => Package['apache2'],
     }
     # make www folder usable
-    common::directory_structure{ "/var/www/":
+    common::directory_structure{ "/var/www/html/":
       user                    => 'kiosk',
       mode                    => '0755',
       require                 => Package['apache2']
@@ -221,7 +221,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
-        require               => Common::Directory_structure["/var/www/"],
+        require               => Common::Directory_structure["/var/www/html"],
       }
     # unzip template
       exec {"unzip":
