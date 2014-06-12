@@ -221,7 +221,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
-        require               => Common::Directory_structure["/var/www/html"],
+        require               => Common::Directory_structure["/var/www/html/"],
       }
     # unzip template
       exec {"unzip":
