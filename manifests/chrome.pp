@@ -23,10 +23,7 @@ class kiosk::chrome(
   $cache_mem                            = "128 MB",
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
-  $enable_apache                        = "false",
-  $installed                            = undef,
-  $enable                               = undef,
-  $ensure                               = undef,
+
 )
  { include stdlib
 # install packages
@@ -185,38 +182,5 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/squid.conf.erb"),
     require               => [Package[$packages]]
     }
-# enable apache and php5 if needed
-  if $enable_apache == 'true' {
-    $installed            = "present",
-    $enable               = "true",
-    $ensure               = "running"
-  } else {
-    $installed            = "absent",
-    $enable               = "false",
-    $ensure               = "stopped"
-  }
-  package { 'apache2','php5','libapache2-mod-php5':
-    ensure => $installed,
-  }
-  service { "apache2":
-    ensure      => $ensure,
-    enable      => $enable,
-    require     => Package['apache2'],
-    subscribe   => [
-                File["/etc/apache2/mods-enabled/rewrite.load"],
-                File["/etc/apache2/sites-available/default"],
-                File["/etc/apache2/conf.d/phpmyadmin.conf"]
-    ],
-  }
-  file { "/etc/apache2/mods-enabled/rewrite.load":
-    ensure  => link,
-    target  => "/etc/apache2/mods-available/rewrite.load",
-    require => Package['apache2'],
-  }
 
-  file { "/etc/apache2/sites-available/default":
-    ensure  => present,
-    source  => "/vagrant/puppet/templates/vhost",
-    require => Package['apache2'],
-  }
 }
