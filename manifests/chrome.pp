@@ -24,6 +24,9 @@ class kiosk::chrome(
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
   $enable_apache                        = "false"
+  $installed                            = undef,
+  $enable                               = undef,
+  $ensure                               = undef
 )
  { include stdlib
 # install packages
@@ -194,7 +197,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   }
   package { 'apache2','php5','libapache2-mod-php5':
     ensure => $installed,
-        }
+  }
   service { "apache2":
     ensure      => $ensure,
     enable      => $enable,
@@ -204,19 +207,16 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
                 File["/etc/apache2/sites-available/default"],
                 File["/etc/apache2/conf.d/phpmyadmin.conf"]
     ],
-    }
+  }
   file { "/etc/apache2/mods-enabled/rewrite.load":
     ensure  => link,
     target  => "/etc/apache2/mods-available/rewrite.load",
     require => Package['apache2'],
-    }
+  }
 
   file { "/etc/apache2/sites-available/default":
     ensure  => present,
     source  => "/vagrant/puppet/templates/vhost",
     require => Package['apache2'],
-    }
-  exec { 'echo "ServerName localhost" | sudo tee /etc/apache2/conf.d/fqdn':
-    require => Package['apache2'],
-    }
+  }
 }
