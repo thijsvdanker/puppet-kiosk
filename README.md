@@ -7,7 +7,7 @@ Midori browser with mouse gestures and transparent mouse cursor, together with S
 * kiosk::java =
 Midori browser with mouse gestures and transparent mouse cursor, together with java applet.
 * kiosk::chrome =
-Chrome browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5.
+Chrome browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5. There is also a possibility to enable apache2.
 
 Parameters
 -------------
@@ -45,7 +45,9 @@ $cache_peer                           = ['.naturalis.nl/nl/het-museum/agenda/'],
 $http_port                            = "8080",
 $cache_mem                            = "128 MB",
 $cache_max_object_size                = "1024 MB",
-$cache_maximum_object_size_in_memory  = "512 KB"
+$cache_maximum_object_size_in_memory  = "512 KB",
+$enable_apache                        = false,
+$webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full']
 ```
 Limitations
 -------------
