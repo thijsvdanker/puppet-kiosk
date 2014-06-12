@@ -225,7 +225,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa test-template.zip",
         cwd                   => "/var/www/",
-        require               => Common::Directory_structure["/var/www/,
+        require               => Common::Directory_structure["/var/www/"],
         unless                => "/usr/bin/test -f /var/www/css/"
       }
   }
