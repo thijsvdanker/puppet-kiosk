@@ -208,6 +208,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       content  => template("kiosk/vhost.erb"),
       require => Package['apache2'],
     }
+    # make www folder usable
+    common::directory_structure{ "/var/www/":
+      user                    => 'kiosk',
+      mode                    => '0755',
+      require                 => Package['apache2']
+    }
     # download test template
       file {"/var/www/test-template.zip":
         source                => "puppet:///modules/kiosk/test-template.zip",
@@ -217,15 +223,11 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         group                 => "kiosk",
         require               => Common::Directory_structure["/var/www/"],
       }
-      common::directory_structure{ "/var/www/":
-        user                    => 'kiosk',
-        mode                    => '0755'
-      }
     # unzip template
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa /var/www/test-template.zip",
         cwd                   => "/var/www/",
-        require               => Common::Directory_structure["/var/www/"],File["/var/www/test-template.zip"]
+        require               => File["/var/www/test-template.zip"]
         unless                => "/usr/bin/test -f /var/www/css/"
       }
   }
