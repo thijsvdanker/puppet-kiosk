@@ -185,16 +185,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     }
 # if needed installs apache
   if ($enable_apache) {
-    $installed            = present
-    $enable               = true
-    $ensure               = "running"
-
     package { $webpackages:
-      ensure => $installed,
+      ensure => present,
      }
     service { "apache2":
-      ensure      => $ensure,
-      enable      => $enable,
+      ensure      => present,
+      enable      => true,
       require     => Package['apache2'],
       subscribe   => [
                   File["/etc/apache2/mods-enabled/rewrite.load"],
@@ -210,15 +206,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 
     file { "/etc/apache2/sites-available/default":
       ensure  => present,
-      source  => "/vagrant/puppet/templates/vhost",
+      content  => template("kiosk/vhost.erb"),
       require => Package['apache2'],
     }
-
   }
   else {
-    $installed            = absent
-    $enable               = false
-    $ensure               = "stopped"
+    notify{"Apache disabled": }
   }
 
 }
