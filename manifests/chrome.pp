@@ -188,34 +188,37 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     $installed            = present
     $enable               = true
     $ensure               = "running"
+
+    package { $webpackages:
+      ensure => $installed,
+     }
+    service { "apache2":
+      ensure      => $ensure,
+      enable      => $enable,
+      require     => Package['apache2'],
+      subscribe   => [
+                  File["/etc/apache2/mods-enabled/rewrite.load"],
+                  File["/etc/apache2/sites-available/default"],
+                  File["/etc/apache2/conf.d/phpmyadmin.conf"]
+      ],
+    }
+    file { "/etc/apache2/mods-enabled/rewrite.load":
+      ensure  => link,
+      target  => "/etc/apache2/mods-available/rewrite.load",
+      require => Package['apache2'],
+    }
+
+    file { "/etc/apache2/sites-available/default":
+      ensure  => present,
+      source  => "/vagrant/puppet/templates/vhost",
+      require => Package['apache2'],
+    }
+
   }
   else {
     $installed            = absent
     $enable               = false
     $ensure               = "stopped"
   }
-  package { $webpackages:
-    ensure => $installed,
-   }
-  service { "apache2":
-    ensure      => $ensure,
-    enable      => $enable,
-    require     => Package['apache2'],
-    subscribe   => [
-                File["/etc/apache2/mods-enabled/rewrite.load"],
-                File["/etc/apache2/sites-available/default"],
-                File["/etc/apache2/conf.d/phpmyadmin.conf"]
-    ],
-  }
-  file { "/etc/apache2/mods-enabled/rewrite.load":
-    ensure  => link,
-    target  => "/etc/apache2/mods-available/rewrite.load",
-    require => Package['apache2'],
-  }
 
-  file { "/etc/apache2/sites-available/default":
-    ensure  => present,
-    source  => "/vagrant/puppet/templates/vhost",
-    require => Package['apache2'],
-  }
 }
