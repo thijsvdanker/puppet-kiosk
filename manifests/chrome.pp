@@ -24,6 +24,7 @@ class kiosk::chrome(
   $cache_max_object_size                = "1024 MB",
   $cache_maximum_object_size_in_memory  = "512 KB",
   $enable_apache                        = false,
+  $webpackages                          = ['apache2','php5','libapache2-mod-php5'],
 )
  { include stdlib
 # install packages
@@ -193,7 +194,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     $enable               = false
     $ensure               = "stopped"
   }
-  package { 'apache2','php5','libapache2-mod-php5':
+  package { $webpackages:
     ensure => $installed,
    }
   service { "apache2":
