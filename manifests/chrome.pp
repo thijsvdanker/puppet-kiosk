@@ -31,20 +31,10 @@ class kiosk::chrome(
   package { $packages:
     ensure                => installed
   }
-
 ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => 'directory'
     }
   )
-# add chromium key
-#  apt::ppa { 'ppa:chromium-daily/stable':
-#    require               => File['/etc/apt/sources.list.d']
-#  }
-# install latest chromium browser
-#  package { 'chromium-browser':
-#    ensure                => latest,
-#    require               => Apt::Ppa['ppa:chromium-daily/stable']
-#  }
 # install google-chrome
   file { "/etc/apt/sources.list.d/google.list":
     owner                 => "kiosk",
@@ -53,18 +43,18 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => "deb http://dl.google.com/linux/deb/ stable main",
     notify                => Exec["Google apt-key"],
   }
-  # Add Google's apt-key.
+# Add Google's apt-key.
   exec { "Google apt-key":
     command               => "/usr/bin/wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | /usr/bin/apt-key add -",
     refreshonly           => true,
     notify                => Exec["apt-get update"],
   }
-  ## refresh:
+# refresh:
   exec { "apt-get update":
     command               => "/usr/bin/apt-get update",
     refreshonly           => true,
   }
-  # Install latest stable
+# Install latest stable
   package { "google-chrome-stable":
     ensure                => latest,
     require               => [ Exec["apt-get update"]],
@@ -221,21 +211,21 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require                 => Package['apache2']
     }
     # download test template
-      file {"/var/www/test-template.zip":
+    file {"/var/www/test-template.zip":
         source                => "puppet:///modules/kiosk/test-template.zip",
         ensure                => "present",
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
         require               => Common::Directory_structure["/var/www/html/"],
-      }
+    }
     # unzip template
       exec {"unzip":
         command               => "/usr/bin/7z x -aoa /var/www/test-template.zip",
         cwd                   => "/var/www/html/",
         require               => File["/var/www/test-template.zip"],
         unless                => "/usr/bin/test -f /var/www/html/css/"
-      }
+    }
   }
   else {
     notify{"Apache disabled": }
