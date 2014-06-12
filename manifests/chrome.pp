@@ -182,5 +182,16 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/squid.conf.erb"),
     require               => [Package[$packages]]
     }
+# enable apache and php5 if needed
+  if $enable_apache == 'true' {
+    $installed            = 'present',
+    $enable               = 'true',
+    $ensure               = 'running'
+  }
+  else {
+    $installed            = 'absent',
+    $enable               = 'false',
+    $ensure               = 'stopped'
+  }
 
 }
