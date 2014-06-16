@@ -3,11 +3,9 @@ puppet-kiosk
 Puppet module to install a simple kiosk browser.It installs bare Xorg, Openbox window manager and:
 
 * kiosk::java =
-Midori browser with mouse gestures and transparent mouse cursor, together with java applet.
+Java applet with transparent mouse cursor.
 * kiosk::chrome =
-Chrome browser gpu forced with mouse gestures and transparent mouse cursor, together with Squid3 local proxy. Made for html5. There is also a possibility to enable apache2.
-* kiosk::midori (outdated) =
-Midori browser with mouse gestures and transparent mouse cursor, together with Squid3 local proxy.
+Chrome browser gpu forced with transparent mouse cursor, together with Squid3 local proxy. Made for html5. There is also a possibility to enable apache2.
 
 Parameters
 -------------
@@ -35,8 +33,6 @@ $cache_max_object_size                = "1024 MB",
 $cache_maximum_object_size_in_memory  = "512 KB",
 $enable_apache                        = false,
 $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full']
-
-kiosk::midori (outdated)
 ```
 Limitations
 -------------
