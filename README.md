@@ -41,7 +41,7 @@ Limitations
 This module has been built on and tested against Puppet 3.2.3 and higher.
 
 The module has been tested on
-- Ubuntu Server 12.04, 13.04 & 14.04.
+- Ubuntu Server 12.04, 13.10 & 14.04.
 
 Dependencies
 -------------
