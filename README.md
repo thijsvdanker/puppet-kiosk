@@ -7,6 +7,8 @@ Java applet with transparent mouse cursor.
 * kiosk::chrome =
 Chrome browser gpu forced with transparent mouse cursor, together with Squid3 local proxy. Made for html5. There is also a possibility to enable apache2.
 
+First we used the Midori browser, but because it doesnt have a good html5 compatibility we moved to google-chrome (since chromium isnt compatible yet with ubuntu 14.04).
+
 Parameters
 -------------
 All parameters are read from defaults in init.pp and can be overwritten by hiera or The foreman.
