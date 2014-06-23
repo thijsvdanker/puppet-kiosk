@@ -108,7 +108,6 @@ class kiosk::java(
     owner                 => "kiosk",
     group                 => "kiosk",
     require               => Common::Directory_structure["/data/kiosk/${applet_name}"],
-    unless                => "/usr/bin/which ${applet_name}",
     notify                => Exec['java-unzip']
   }
 # unzip java applet
