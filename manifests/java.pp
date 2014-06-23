@@ -107,7 +107,7 @@ class kiosk::java(
     mode                  => "755",
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => Common::Directory_structure["/data/kiosk/${applet_name}"]
+    require               => Common::Directory_structure["/data/kiosk/${applet_name}"],
     notify                => Exec['java-unzip']
   }
 # unzip java applet
