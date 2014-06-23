@@ -113,7 +113,7 @@ class kiosk::java(
   exec {"unzip":
     command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_name}.zip",
     cwd                   => "/data/kiosk/${applet_name}",
-    unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/data",
+    unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/data/$interactive_name",
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
   }
 }
