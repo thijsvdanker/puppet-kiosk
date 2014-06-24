@@ -25,6 +25,7 @@ class kiosk::chrome(
   $cache_maximum_object_size_in_memory  = "512 KB",
   $enable_apache                        = false,
   $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
+  $extractpassword                      = undef,
   $applet_name                          = undef,
 )
  { include stdlib
@@ -222,7 +223,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     }
     # unzip template
       exec {"unzip":
-        command               => "/usr/bin/7z x -aoa /var/www/${applet_name}.zip",
+        command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
         cwd                   => "/var/www/html/",
         require               => File["/var/www/${applet_name}"],
         unless                => "/usr/bin/test -f /var/www/html/style.css"
