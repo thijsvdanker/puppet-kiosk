@@ -3,4 +3,4 @@
 # if which /usr/lib/openbox/xdg-autostart >/dev/null; then
 #  /usr/lib/openbox/xdg-autostart $DESKTOP_ENV
 # fi
-( sleep 2 && cd /data/kiosk/<%= @applet_name %> && sleep 2 && sh <%= @interactive_name %>.sh ) &
+( sleep 2 && cd /data/kiosk/<%= @applet_name %> && sleep 2 && sh <%= @interactive_name %> ) &
