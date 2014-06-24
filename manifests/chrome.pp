@@ -131,7 +131,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     ensure                => present,
     owner                 => 'kiosk',
     group                 => 'kiosk',
-    mode                  => '0644',
+    mode                  => '0444',
     content               => template("kiosk/chrome-config.erb"),
     require               => [User['kiosk']]
   }
