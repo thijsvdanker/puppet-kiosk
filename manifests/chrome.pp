@@ -226,7 +226,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       exec {"html5-unzip":
         command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
         cwd                   => "/var/www/html/",
-        unless                => "/usr/bin/test -f /var/www/${applet_name}.zip",
+        unless                => "/usr/bin/test -f /var/www/html/style.css",
         refreshonly           => true,
         require               => [ Common::Directory_structure["/var/www/html/"], File["/var/www/${applet_name}.zip"] ]
     }
