@@ -223,13 +223,13 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         notify                => Exec['html5-unzip']
     }
     # unzip template
-    #  exec {"html5-unzip":
+      exec {"html5-unzip":
     #    command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
     #    cwd                   => "/var/www/html/",
     #    unless                => "/usr/bin/test -f /var/www/${applet_name}.zip",
     #    refreshonly           => true,
     #    require               => [ Common::Directory_structure["/var/www/html/"], File["/var/www/${applet_name}"] ]
-    #}
+    }
   }
   else {
     notify{"Apache disabled": }
