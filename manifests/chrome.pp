@@ -129,8 +129,8 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 # ensure google-chrome config file
   file { '/home/kiosk/.config/google-chrome/Local State':
     ensure                => present,
-    owner                 => 'kiosk',
-    group                 => 'kiosk',
+    owner                 => 'root',
+    group                 => 'root',
     mode                  => '0444',
     content               => template("kiosk/chrome-config.erb"),
     require               => [User['kiosk']]
