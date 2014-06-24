@@ -19,12 +19,12 @@ $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip
 $extractpassword                      = undef,
 $applet_name                          = undef,
 $interactive_name                     = undef,
-$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
 
 kiosk::chrome >
 $packages                             = ['xorg','openbox','squid3','build-essential'],
-$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-$browser_path                         = "google-chrome --kiosk http://html5test.com",
+$dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+$browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --no-first-run --kiosk --allow-file-access-from-files http://www.naturalis.nl/nl/het-museum/agenda/",
 $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
 $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
 $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -34,7 +34,9 @@ $cache_mem                            = "128 MB",
 $cache_max_object_size                = "1024 MB",
 $cache_maximum_object_size_in_memory  = "512 KB",
 $enable_apache                        = false,
-$webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full']
+$webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
+$extractpassword                      = undef,
+$applet_name                          = undef,
 ```
 Limitations
 -------------
