@@ -207,7 +207,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
       require => Package['apache2'],
     }
     # make www folder usable
-    common::directory_structure{ "/var/www/html/":
+    common::directory_structure{ "/var/www/":
       user                    => 'kiosk',
       mode                    => '0755',
       require                 => Package['apache2']
@@ -219,17 +219,17 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         mode                  => "755",
         owner                 => "kiosk",
         group                 => "kiosk",
-        require               => Common::Directory_structure["/var/www/html/"],
+        require               => Common::Directory_structure["/var/www/"],
         notify                => Exec['html5-unzip']
     }
     # unzip template
       exec {"html5-unzip":
-    #    command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
-    #    cwd                   => "/var/www/html/",
-    #    unless                => "/usr/bin/test -f /var/www/${applet_name}.zip",
-    #    refreshonly           => true,
-    #    require               => [ Common::Directory_structure["/var/www/html/"], File["/var/www/${applet_name}"] ]
-    }
+        command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
+        cwd                   => "/var/www/",
+        unless                => "/usr/bin/test -f /var/www/${applet_name}.zip",
+        refreshonly           => true,
+        require               => [ Common::Directory_structure["/var/www/"], File["/var/www/${applet_name}.zip"] ]
+    }  
   }
   else {
     notify{"Apache disabled": }
