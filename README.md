@@ -11,7 +11,7 @@ First we used the Midori browser, but because it doesnt have a good html5 compat
 
 Parameters
 -------------
-All parameters are read from defaults in init.pp and can be overwritten by hiera or The foreman.
+All parameters are read from defaults in init.pp and can be overwritten by The foreman.
 
 ```
 kiosk::java >

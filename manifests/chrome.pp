@@ -220,13 +220,15 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
         owner                 => "kiosk",
         group                 => "kiosk",
         require               => Common::Directory_structure["/var/www/html/"],
+        notify                => Exec['html5-unzip']
     }
     # unzip template
-      exec {"unzip":
+      exec {"html5-unzip":
         command               => "/usr/bin/7z x -p${extractpassword} -aoa /var/www/${applet_name}.zip",
         cwd                   => "/var/www/html/",
-        require               => File["/var/www/${applet_name}"],
-        unless                => "/usr/bin/test -f /var/www/html/style.css"
+        unless                => "/usr/bin/test -f /var/www/${applet_name}.zip",
+        refreshonly           => true,
+        require               => [ Common::Directory_structure["/var/www/html/"], File["/var/www/${applet_name}"] ]
     }
   }
   else {
