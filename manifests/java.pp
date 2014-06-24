@@ -90,12 +90,24 @@ class kiosk::java(
      mode                  => '0644'
    }
 # autostart java
-    file { '/home/kiosk/.config/openbox/autostart.sh':
+  case $operatingsystem {
+  ubuntu: {
+  file { '/home/kiosk/.config/openbox/autostart.sh':
     ensure                => present,
     mode                  => '0644',
-    content               => template("kiosk/openbox-autostart-java.sh.erb"),
+    content               => template("kiosk/openbox-autostart-java-linux.sh.erb"),
     require               => [File['/home/kiosk/.config/openbox']]
     }
+  }
+  default: {
+  file { '/home/kiosk/.config/openbox/autostart.sh':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("kiosk/openbox-autostart-java-win.sh.erb"),
+    require               => [File['/home/kiosk/.config/openbox']]
+    }
+  }
+  }
   common::directory_structure{ "/data/kiosk/${applet_name}":
     user                    => 'kiosk',
     mode                    => '0755'
