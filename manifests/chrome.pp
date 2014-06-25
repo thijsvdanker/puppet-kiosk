@@ -88,6 +88,19 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/emptycursor.erb"),
     require               => Exec["make_transparent"]
   }
+#change splash
+  common::directory_structure{ "/lib/plymouth/themes/nat/":
+    user                    => 'kiosk',
+    mode                    => '0755'
+  }
+  file { '/lib/plymouth/themes/nat/800.png':
+    source                => "puppet:///modules/kiosk/800.png",
+    ensure                => present,
+    mode                  => '0644',
+    owner                 => "kiosk",
+    group                 => "kiosk",
+    require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+  }
 # setup kiosk user
   user { "kiosk":
     comment               => "kiosk user",
