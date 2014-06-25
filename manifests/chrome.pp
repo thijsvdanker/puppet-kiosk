@@ -118,7 +118,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
   }
   exec { 'update-splash':
-    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u",
+    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100",
     require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
 #    unless                => "update-alternatives --list default.plymouth | grep /lib/plymouth/themes/nat/nat.theme",
   }
