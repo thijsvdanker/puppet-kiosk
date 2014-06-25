@@ -12,7 +12,7 @@
 #
 
 class kiosk::chrome(
-  $packages                             = ['xorg','openbox','squid3','build-essential'],
+  $packages                             = ['xorg','openbox','squid3','build-essential','plymouth-theme-script'],
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --no-first-run --kiosk --allow-file-access-from-files http://www.naturalis.nl/nl/het-museum/agenda/",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -93,6 +93,22 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     user                    => 'kiosk',
     mode                    => '0755'
   }
+  file { '/lib/plymouth/themes/nat/nat.theme':
+    content               => template("kiosk/nat.theme.erb"),
+    ensure                => present,
+    mode                  => '0644',
+    owner                 => "kiosk",
+    group                 => "kiosk",
+    require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+  }
+  file { '/lib/plymouth/themes/nat/nat.script':
+    content               => template("kiosk/nat.script.erb"),
+    ensure                => present,
+    mode                  => '0644',
+    owner                 => "kiosk",
+    group                 => "kiosk",
+    require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+  }
   file { '/lib/plymouth/themes/nat/800.png':
     source                => "puppet:///modules/kiosk/800.png",
     ensure                => present,
@@ -100,6 +116,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     owner                 => "kiosk",
     group                 => "kiosk",
     require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+  }
+  exec { 'update-splash':
+    command               => "sudo update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && sudo update-initramfs -u",
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ]
   }
 # setup kiosk user
   user { "kiosk":
