@@ -122,12 +122,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   exec { 'set-theme':
       command             => "/usr/bin/update-alternatives --set default.plymouth /lib/plymouth/themes/nat/nat.theme",
       notify              => Exec['update-initramfs'],
-      require             => [ File[$dirs]], [Package[$packages]], File['/lib/plymouth/themes/nat/800.png'] ],
+      require             => [ File[$dirs], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
       unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'";
   }
   exec { 'update-initramfs':
     command               => "/usr/sbin/update-initramfs -k all -u",
-    require               => [ File[$dirs]], [Package[$packages]], File['/lib/plymouth/themes/nat/800.png'] ],
+    require               => [ File[$dirs], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
     path                   => "/usr/bin",
     unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
   }
