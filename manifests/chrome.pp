@@ -107,7 +107,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644',
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], File['/lib/plymouth/themes/nat/nat.theme'] ]
   }
   file { '/lib/plymouth/themes/nat/800.png':
     source                => "puppet:///modules/kiosk/800.png",
@@ -115,7 +115,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644',
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], File['/lib/plymouth/themes/nat/nat.script'] ]
   }
 #  exec { 'update-splash':
 #    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u ",
@@ -126,12 +126,12 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   exec { 'set-theme':
       command             => "/usr/bin/update-alternatives --set default.plymouth /lib/plymouth/themes/nat/nat.theme",
       notify              => Exec['update-initramfs'],
-      require             => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
+      require             => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]], File['/lib/plymouth/themes/nat/800.png'] ],
       unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'";
   }
   exec { 'update-initramfs':
     command               => "/usr/sbin/update-initramfs -k all -u",
-    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]], File['/lib/plymouth/themes/nat/800.png'] ],
     path                   => "/usr/bin",
     unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
   }
