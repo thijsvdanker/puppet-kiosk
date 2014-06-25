@@ -13,7 +13,7 @@
 
 class kiosk::chrome(
   $packages                             = ['xorg','openbox','squid3','build-essential','plymouth-theme-script'],
-  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors','/lib/plymouth/themes/nat'],
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --no-first-run --kiosk --allow-file-access-from-files http://www.naturalis.nl/nl/het-museum/agenda/",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
   $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
@@ -89,13 +89,19 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Exec["make_transparent"]
   }
 #change splash
+  file { /lib/plymouth/themes/nat:
+    ensure                => 'directory',
+    owner                 => 'root',
+    group                 => 'root',
+    mode                  => '0644'
+}
   file { '/lib/plymouth/themes/nat/nat.theme':
     content               => template("kiosk/nat.theme.erb"),
     ensure                => present,
     mode                  => '0644',
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => File[$dirs],
+    require               => File['/lib/plymouth/themes/nat'],
   }
   file { '/lib/plymouth/themes/nat/nat.script':
     content               => template("kiosk/nat.script.erb"),
@@ -103,7 +109,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644',
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => [ File[$dirs], File['/lib/plymouth/themes/nat/nat.theme'] ]
+    require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.theme'] ]
   }
   file { '/lib/plymouth/themes/nat/800.png':
     source                => "puppet:///modules/kiosk/800.png",
@@ -111,7 +117,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     mode                  => '0644',
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => [ File[$dirs], File['/lib/plymouth/themes/nat/nat.script'] ]
+    require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.script'] ]
   }
 #  exec { 'update-splash':
 #    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u ",
@@ -122,13 +128,13 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
   exec { 'set-theme':
       command             => "/usr/bin/update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && /usr/bin/update-alternatives --set default.plymouth /lib/plymouth/themes/nat/nat.theme",
       notify              => Exec['update-initramfs'],
-      require             => [ File[$dirs], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
+      require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
       unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'",
   }
   exec { 'update-initramfs':
     command             => '/usr/sbin/update-initramfs -k all -u',
     refreshonly         => true,
-    require             => [ File[$dirs], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
+    require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
   }
 # setup kiosk user
   user { "kiosk":
