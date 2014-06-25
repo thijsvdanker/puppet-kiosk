@@ -118,8 +118,9 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Common::Directory_structure["/lib/plymouth/themes/nat/"],
   }
   exec { 'update-splash':
-    command               => "sudo update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && sudo update-initramfs -u",
-    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ]
+    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u",
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
+    unless                => "update-alternatives --list default.plymouth | /bin/grep nat",
   }
 # setup kiosk user
   user { "kiosk":
