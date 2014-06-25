@@ -89,7 +89,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Exec["make_transparent"]
   }
 #change splash
-  common::directory_structure{ "/lib/plymouth/themes/nat/":
+  common::directory_structure{ "/lib/plymouth/themes/nat":
     user                    => 'kiosk',
     mode                    => '0755'
   }
@@ -120,9 +120,21 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #  exec { 'update-splash':
 #    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u ",
 #    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
-#    path                   => "/usr/bin",
+#    path                  => "/usr/bin",
 #    unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
 #  }
+  exec { 'set-theme':
+      command             => "/usr/bin/update-alternatives --set default.plymouth /lib/plymouth/themes/nat/nat.theme",
+      notify              => Exec['update-initramfs'],
+      require             => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
+      unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'";
+  }
+  exec { 'update-initramfs':
+    command               => "/usr/sbin/update-initramfs -k all -u",
+    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
+    path                   => "/usr/bin",
+    unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
+  }
 # setup kiosk user
   user { "kiosk":
     comment               => "kiosk user",
