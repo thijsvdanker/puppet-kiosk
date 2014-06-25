@@ -91,7 +91,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #change splash
   common::directory_structure{ "/lib/plymouth/themes/nat":
     user                    => 'kiosk',
-    mode                    => '0755'
+    mode                    => '0644'
   }
   file { '/lib/plymouth/themes/nat/nat.theme':
     content               => template("kiosk/nat.theme.erb"),
