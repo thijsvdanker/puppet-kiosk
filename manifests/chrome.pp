@@ -89,7 +89,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     require               => Exec["make_transparent"]
   }
 #change splash
-  file { /lib/plymouth/themes/nat:
+  file { '/lib/plymouth/themes/nat':
     ensure                => 'directory',
     owner                 => 'root',
     group                 => 'root',
