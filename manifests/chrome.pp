@@ -99,24 +99,24 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/nat.theme.erb"),
     ensure                => present,
     mode                  => '0644',
-    owner                 => "kiosk",
-    group                 => "kiosk",
+    owner                 => "root",
+    group                 => "root",
     require               => File['/lib/plymouth/themes/nat'],
   }
   file { '/lib/plymouth/themes/nat/nat.script':
     content               => template("kiosk/nat.script.erb"),
     ensure                => present,
     mode                  => '0644',
-    owner                 => "kiosk",
-    group                 => "kiosk",
+    owner                 => "root",
+    group                 => "root",
     require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.theme'] ]
   }
   file { '/lib/plymouth/themes/nat/800.png':
     source                => "puppet:///modules/kiosk/800.png",
     ensure                => present,
     mode                  => '0644',
-    owner                 => "kiosk",
-    group                 => "kiosk",
+    owner                 => "root",
+    group                 => "root",
     require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.script'] ]
   }
 #  exec { 'update-splash':
