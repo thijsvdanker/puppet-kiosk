@@ -3,4 +3,4 @@
 # if which /usr/lib/openbox/xdg-autostart >/dev/null; then
 #  /usr/lib/openbox/xdg-autostart $DESKTOP_ENV
 # fi
-( sleep 2 && rm /home/kiosk/.config/google-chrome/Default/Preferences && sleep 2 && <%= @browser_path %> ) &
+( sleep 2 && <%= @browser_path %> ) &
