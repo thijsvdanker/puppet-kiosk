@@ -114,6 +114,10 @@ class kiosk::java(
     user                    => 'kiosk',
     mode                    => '0755'
   }
+  common::directory_structure{ "/data/kiosk/${applet_name}/$images_path":
+    user                    => 'kiosk',
+    mode                    => '0755'
+  }
 # download java applet
   file {"/data/kiosk/${applet_name}/${applet_name}.zip":
     source                => "puppet:///modules/kiosk/${applet_name}.zip",
