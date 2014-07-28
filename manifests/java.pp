@@ -143,6 +143,7 @@ class kiosk::java(
     command               => "/usr/bin/7z x -aoa /data/kiosk/${applet_name}/${applet_name}.zip",
     cwd                   => "/data/kiosk/${applet_name}",
     user                  => "kiosk",
+    group                 => "kiosk",
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$interactive_name",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
@@ -151,7 +152,8 @@ class kiosk::java(
   exec {"java-unzip-images":
     command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_images}.zip",
     cwd                   => "/data/kiosk/${applet_name}/$images_path",
-    user                 => "kiosk",
+    user                  => "kiosk",
+    group                 => "kiosk",
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$images_path",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}/$images_path"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
