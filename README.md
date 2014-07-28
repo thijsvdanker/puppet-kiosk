@@ -3,7 +3,7 @@ puppet-kiosk
 Puppet module to install a simple kiosk browser.It installs bare Xorg, Openbox window manager and:
 
 * kiosk::java =
-Java applet with transparent mouse cursor.
+Java applet with transparent mouse cursor. There is a zip file with the open code and a protected zip file with Naturalis images.
 * kiosk::chrome =
 Chrome browser gpu forced with transparent mouse cursor, together with Squid3 local proxy. Made for html5. There is also a possibility to enable apache2.
 
@@ -18,6 +18,8 @@ kiosk::java >
 $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential'],
 $extractpassword                      = undef,
 $applet_name                          = undef,
+$applet_images                        = undef,
+$images_path                          = undef,
 $interactive_name                     = undef,
 $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
 
