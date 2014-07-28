@@ -15,6 +15,8 @@ class kiosk::java(
   $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
+  $applet_images                        = undef,
+  $images_path                          = undef,
   $interactive_name                     = undef,
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
 )
@@ -122,12 +124,30 @@ class kiosk::java(
     require               => Common::Directory_structure["/data/kiosk/${applet_name}"],
     notify                => Exec['java-unzip']
   }
+# download protected images
+  file {"/data/kiosk/${applet_name}/${applet_images}.zip":
+    source                => "puppet:///modules/kiosk/${applet_images}.zip",
+    ensure                => "present",
+    mode                  => "755",
+    owner                 => "kiosk",
+    group                 => "kiosk",
+    require               => Common::Directory_structure["/data/kiosk/${applet_name}"],
+    notify                => Exec['java-unzip-images']
+  }
 # unzip java applet
   exec {"java-unzip":
-    command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_name}.zip",
+    command               => "/usr/bin/7z x -aoa /data/kiosk/${applet_name}/${applet_name}.zip",
     cwd                   => "/data/kiosk/${applet_name}",
-    unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/data/$interactive_name",
+    unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$interactive_name",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
+  }
+# unzip images
+  exec {"java-unzip-images":
+    command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_images}.zip",
+    cwd                   => "/data/kiosk/${applet_name}/$images_path",
+    unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$images_path",
+    refreshonly           => true,
+    require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
   }
 }
