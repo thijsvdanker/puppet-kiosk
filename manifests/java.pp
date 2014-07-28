@@ -150,7 +150,7 @@ class kiosk::java(
   exec {"java-unzip-images":
     command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_images}.zip",
     cwd                   => "/data/kiosk/${applet_name}/$images_path",
-  #  owner                 => "kiosk",
+    user                 => "kiosk",
   #  group                 => "kiosk",
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$images_path",
     refreshonly           => true,
