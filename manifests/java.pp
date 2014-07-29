@@ -97,7 +97,6 @@ class kiosk::java(
  # Update wake on lanr
    exec { 'update_wol':
      command               => "/usr/sbin/update-rc.d -f wakeonlanconfig defaults && /etc/init.d/wakeonlanconfig",
-     unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
      refreshonly           => true,
      require               => [File['/etc/init.d/wakeonlanconfig'], Package[$packages]]
   }
