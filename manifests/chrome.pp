@@ -12,7 +12,7 @@
 #
 
 class kiosk::chrome(
-  $packages                             = ['xorg','openbox','squid3','build-essential','plymouth-theme-script'],
+  $packages                             = ['xorg','openbox','squid3','build-essential','plymouth-theme-script','ethtool'],
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
   $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --no-first-run --kiosk --allow-file-access-from-files http://www.naturalis.nl/nl/het-museum/agenda/",
   $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
@@ -27,6 +27,7 @@ class kiosk::chrome(
   $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
+  $interface                            = em1,
 )
  { include stdlib
 # install packages
@@ -126,10 +127,10 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
 #    unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
 #  }
   exec { 'set-theme':
-      command             => "/usr/bin/update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && /usr/bin/update-alternatives --config default.plymouth",
-      notify              => Exec['update-initramfs'],
-      require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
-#      unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'",
+    command             => "/usr/bin/update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && /usr/bin/update-alternatives --config default.plymouth",
+    notify              => Exec['update-initramfs'],
+    require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
+#   unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'",
   }
   exec { 'update-initramfs':
     command             => '/usr/sbin/update-initramfs -u',
@@ -166,6 +167,21 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/.xinitrc.erb"),
     require               => [User['kiosk']]
   }
+# enable wake on lan
+  file { '/etc/init.d/wakeonlanconfig':
+    ensure                => present,
+    mode                  => '0755',
+    owner                 => 'kiosk',
+    content               => template("kiosk/wakeonlanconfig.erb"),
+    require               => [User['kiosk']],
+    notify                => Exec['update_wol']
+   }
+# Update wake on lanr
+  exec { 'update_wol':
+    command               => "/usr/sbin/update-rc.d -f wakeonlanconfig defaults && /etc/init.d/wakeonlanconfig",
+    refreshonly           => true,
+    require               => [File['/etc/init.d/wakeonlanconfig'], Package[$packages]]
+ }
 # make userdirs
   file { $dirs:
     ensure                => 'directory',
