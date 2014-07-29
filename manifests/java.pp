@@ -145,7 +145,7 @@ class kiosk::java(
     cwd                   => "/data/kiosk/${applet_name}",
     user                  => "kiosk",
     group                 => "kiosk",
-    creates               => "/data/kiosk/${applet_name}",
+
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$interactive_name",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
@@ -156,7 +156,7 @@ class kiosk::java(
     cwd                   => "/data/kiosk/${applet_name}/$platform/$images_path",
     user                  => "kiosk",
     group                 => "kiosk",
-    creates               => "/data/kiosk/${applet_name}/$platform/$images_path",
+    
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$platform/$images_path",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}/$platform/$images_path"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
