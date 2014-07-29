@@ -115,10 +115,6 @@ class kiosk::java(
     user                    => 'kiosk',
     mode                    => '0755'
   }
-  #common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
-  #  user                    => 'kiosk',
-  #  mode                    => '0755'
-  #}
 # download java applet
   file {"/data/kiosk/${applet_name}/${applet_name}.zip":
     source                => "puppet:///modules/kiosk/${applet_name}.zip",
@@ -149,6 +145,11 @@ class kiosk::java(
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
   }
+  common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
+    user                    => 'kiosk',
+    mode                    => '0755'
+    require                 => File["/data/kiosk/${applet_name}/${applet_images}.zip"]
+  }
 # unzip images
   exec {"java-unzip-images":
     command               => "/usr/bin/7z x -p${extractpassword} -aoa /data/kiosk/${applet_name}/${applet_images}.zip",
@@ -157,6 +158,6 @@ class kiosk::java(
     group                 => "kiosk",
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$platform/$images_path",
     refreshonly           => true,
-    require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
+    require               => [ Common::Directory_structure["/data/kiosk/${applet_name}/$platform/$images_path"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
   }
 }
