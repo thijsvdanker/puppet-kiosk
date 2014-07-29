@@ -136,7 +136,7 @@ class kiosk::java(
     mode                  => "755",
     owner                 => "kiosk",
     group                 => "kiosk",
-    require               => Common::Directory_structure["/data/kiosk/${applet_name}"],
+    require               => Common::Directory_structure["/data/kiosk/${applet_name}/$platform/$images_path"],
     notify                => Exec['java-unzip-images']
   }
 # unzip java applet
