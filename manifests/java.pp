@@ -12,13 +12,14 @@
 #
 
 class kiosk::java(
-  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential'],
+  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential','ethtool'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $applet_images                        = undef,
   $platform                             = undef,
   $images_path                          = undef,
   $interactive_name                     = undef,
+  $interface                            = em1,
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
 )
 {
@@ -84,6 +85,22 @@ class kiosk::java(
      content               => template("kiosk/.xinitrc.erb"),
      require               => [User['kiosk']]
    }
+ # enable wake on lan
+   file { '/etc/init.d/wakeonlanconfig':
+     ensure                => present,
+     mode                  => '0755',
+     owner                 => 'kiosk',
+     content               => template("kiosk/wakeonlanconfig.erb"),
+     require               => [User['kiosk']],
+     notify                => Exec['update_wol']
+  }
+ # Update wake on lanr
+   exec { 'update_wol':
+     command               => "/usr/sbin/update-rc.d -f wakeonlanconfig defaults && /etc/init.d/wakeonlanconfig",
+     unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+     refreshonly           => true,
+     require               => [File['/etc/init.d/wakeonlanconfig'], Package[$packages]]
+  }
  # make userdirs
    file { $dirs:
      ensure                => 'directory',
@@ -91,7 +108,7 @@ class kiosk::java(
      owner                 => 'kiosk',
      group                 => 'kiosk',
      mode                  => '0644'
-   }
+  }
 # autostart java
   case $operatingsystem {
   ubuntu: {
