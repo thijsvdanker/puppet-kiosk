@@ -16,6 +16,7 @@ class kiosk::java(
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $applet_images                        = undef,
+  $platform                             = undef,
   $images_path                          = undef,
   $interactive_name                     = undef,
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
