@@ -144,11 +144,12 @@ class kiosk::java(
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$interactive_name",
     refreshonly           => true,
     require               => [ Common::Directory_structure["/data/kiosk/${applet_name}"], File["/data/kiosk/${applet_name}/${applet_name}.zip"] ],
+    notify                => [ common::directory_structure["/data/kiosk/${applet_name}/$platform/$images_path"] ],
   }
   common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
-    user                    => 'kiosk',
-    mode                    => '0755',
-    require                 => File["/data/kiosk/${applet_name}/${applet_images}.zip"]
+    user                  => 'kiosk',
+    mode                  => '0755',
+    refreshonly           => true,
   }
 # unzip images
   exec {"java-unzip-images":
