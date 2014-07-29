@@ -149,7 +149,6 @@ class kiosk::java(
   common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
     user                  => 'kiosk',
     mode                  => '0755',
-    refreshonly           => true,
   }
 # unzip images
   exec {"java-unzip-images":
