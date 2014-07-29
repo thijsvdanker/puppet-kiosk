@@ -157,6 +157,6 @@ class kiosk::java(
     group                 => "kiosk",
     unless                => "/usr/bin/test -f /data/kiosk/${applet_name}/$platform/$images_path",
     refreshonly           => true,
-    require               => [ Common::Directory_structure["/data/kiosk/${applet_name}/$images_path"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
+    require               => [ Common::Directory_structure["/data/kiosk/${applet_name}/$platform/$images_path"], File["/data/kiosk/${applet_name}/${applet_images}.zip"] ],
   }
 }
