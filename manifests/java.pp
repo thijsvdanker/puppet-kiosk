@@ -115,7 +115,7 @@ class kiosk::java(
     user                    => 'kiosk',
     mode                    => '0755'
   }
-  common::directory_structure{ "/data/kiosk/${applet_name}/$images_path":
+  common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
     user                    => 'kiosk',
     mode                    => '0755'
   }
