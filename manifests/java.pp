@@ -147,7 +147,7 @@ class kiosk::java(
   }
   common::directory_structure{ "/data/kiosk/${applet_name}/$platform/$images_path":
     user                    => 'kiosk',
-    mode                    => '0755'
+    mode                    => '0755',
     require                 => File["/data/kiosk/${applet_name}/${applet_images}.zip"]
   }
 # unzip images
