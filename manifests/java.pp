@@ -12,7 +12,7 @@
 #
 
 class kiosk::java(
-  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential','ethtool'],
+  $packages                             = ['xorg','openbox','openjdk-7-jre','p7zip-full','build-essential','ethtool','plymouth-theme-solar'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
   $applet_images                        = undef,
@@ -41,7 +41,7 @@ class kiosk::java(
      unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
      require               => Exec["download_transparent"]
    }
- # configure transparent cursor
+# configure transparent cursor
    exec {"make_transparent":
      command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -k",
      cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
@@ -55,54 +55,6 @@ class kiosk::java(
      content               => template("kiosk/emptycursor.erb"),
      require               => Exec["make_transparent"]
    }
-#change splash
-  file { '/lib/plymouth/themes/nat':
-    ensure                => 'directory',
-    owner                 => 'root',
-    group                 => 'root',
-    mode                  => '0644'
-}
-  file { '/lib/plymouth/themes/nat/nat.theme':
-    content               => template("kiosk/nat.theme.erb"),
-    ensure                => present,
-    mode                  => '0644',
-    owner                 => "root",
-    group                 => "root",
-    require               => File['/lib/plymouth/themes/nat'],
-  }
-  file { '/lib/plymouth/themes/nat/nat.script':
-    content               => template("kiosk/nat.script.erb"),
-    ensure                => present,
-    mode                  => '0644',
-    owner                 => "root",
-    group                 => "root",
-    require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.theme'] ]
-  }
-  file { '/lib/plymouth/themes/nat/800.png':
-    source                => "puppet:///modules/kiosk/800.png",
-    ensure                => present,
-    mode                  => '0644',
-    owner                 => "root",
-    group                 => "root",
-    require               => [ File['/lib/plymouth/themes/nat'], File['/lib/plymouth/themes/nat/nat.script'] ]
-  }
-#  exec { 'update-splash':
-#    command               => "update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && update-initramfs -u ",
-#    require               => [ Common::Directory_structure["/lib/plymouth/themes/nat/"], [Package[$packages]] ],
-#    path                  => "/usr/bin",
-#    unless                => "update-alternatives --list default.plymouth | /bin/grep /lib/plymouth/themes/nat/nat.theme",
-#  }
-  exec { 'set-theme':
-    command             => "/usr/bin/update-alternatives --install /lib/plymouth/themes/default.plymouth default.plymouth /lib/plymouth/themes/nat/nat.theme 100 && /usr/bin/update-alternatives --config default.plymouth",
-    notify              => Exec['update-initramfs'],
-    require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
-#   unless              => "/usr/bin/update-alternatives --query default.plymouth | /bin/fgrep -qx 'Status: manual'",
-  }
-  exec { 'update-initramfs':
-    command             => '/usr/sbin/update-initramfs -u',
-    refreshonly         => true,
-    require             => [ File['/lib/plymouth/themes/nat'], Package[$packages], File['/lib/plymouth/themes/nat/800.png'] ],
-  }
  # setup kiosk user
    user { "kiosk":
      comment               => "kiosk user",
