@@ -19,94 +19,78 @@ class kiosk::java(
   $platform                             = undef,
   $images_path                          = undef,
   $interactive_name                     = undef,
-  $interface                            = em1,
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
 )
 {
   include stdlib
- # install packages
-   package { $packages:
-     ensure                => installed
-   }
- # download and untar transparent cursor
-   exec { 'download_transparent':
-     command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
-     unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
-     require               => [Package[$packages]]
-   }
- # configure transparent cursor
-   exec {"config_transparent":
-     command               => "/bin/sh configure",
-     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
-     unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
-     require               => Exec["download_transparent"]
-   }
+# install packages
+  package { $packages:
+    ensure                => installed
+  }
+# download and untar transparent cursor
+  exec { 'download_transparent':
+    command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
+    unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+    require               => [Package[$packages]]
+  }
 # configure transparent cursor
-   exec {"make_transparent":
-     command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -k",
-     cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-     unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
-     require               => Exec["config_transparent"]
-     }
- # autoset transparent cursor
-   file { '/home/kiosk/.icons/default/cursors/emptycursor':
-     ensure                => present,
-     mode                  => '0644',
-     content               => template("kiosk/emptycursor.erb"),
-     require               => Exec["make_transparent"]
-   }
- # setup kiosk user
-   user { "kiosk":
-     comment               => "kiosk user",
-     home                  => "/home/kiosk",
-     ensure                => present,
-     managehome            => true,
-     password              => sha1('kiosk'),
-   }
- # startx on login
-   file { '/home/kiosk/.profile':
-     ensure                => present,
-     mode                  => '0644',
-     content               => template("kiosk/.profile.erb"),
-     require               => [User['kiosk']]
-   }
- # autologin kiosk user
-   file { '/etc/init/tty1.conf':
-     ensure                => present,
-     mode                  => '0644',
-     content               => template("kiosk/tty1.conf.erb"),
-     require               => [User['kiosk']]
-   }
- # autostart openbox and disable screensaver/blanking
-   file { '/home/kiosk/.xinitrc':
-     ensure                => present,
-     mode                  => '0644',
-     owner                 => 'kiosk',
-     content               => template("kiosk/.xinitrc.erb"),
-     require               => [User['kiosk']]
-   }
- # enable wake on lan
-   file { '/etc/init.d/wakeonlanconfig':
-     ensure                => present,
-     mode                  => '0755',
-     owner                 => 'kiosk',
-     content               => template("kiosk/wakeonlanconfig.erb"),
-     require               => [User['kiosk']],
-     notify                => Exec['update_wol']
+  exec {"config_transparent":
+    command               => "/bin/sh configure",
+    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
+    unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
+    require               => Exec["download_transparent"]
   }
- # Update wake on lanr
-   exec { 'update_wol':
-     command               => "/usr/sbin/update-rc.d -f wakeonlanconfig defaults && /etc/init.d/wakeonlanconfig",
-     refreshonly           => true,
-     require               => [File['/etc/init.d/wakeonlanconfig'], Package[$packages]]
+# configure transparent cursor
+  exec {"make_transparent":
+    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -k",
+    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
+    unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
+    require               => Exec["config_transparent"]
   }
- # make userdirs
-   file { $dirs:
-     ensure                => 'directory',
-     require               => User['kiosk'],
-     owner                 => 'kiosk',
-     group                 => 'kiosk',
-     mode                  => '0644'
+# autoset transparent cursor
+  file { '/home/kiosk/.icons/default/cursors/emptycursor':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("kiosk/emptycursor.erb"),
+    require               => Exec["make_transparent"]
+  }
+# setup kiosk user
+  user { "kiosk":
+    comment               => "kiosk user",
+    home                  => "/home/kiosk",
+    ensure                => present,
+    managehome            => true,
+    password              => sha1('kiosk'),
+  }
+# startx on login
+  file { '/home/kiosk/.profile':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("kiosk/.profile.erb"),
+    require               => [User['kiosk']]
+  }
+# autologin kiosk user
+  file { '/etc/init/tty1.conf':
+    ensure                => present,
+    mode                  => '0644',
+    content               => template("kiosk/tty1.conf.erb"),
+    require               => [User['kiosk']]
+  }
+# autostart openbox and disable screensaver/blanking
+  file { '/home/kiosk/.xinitrc':
+    ensure                => present,
+    mode                  => '0644',
+    owner                 => 'kiosk',
+    content               => template("kiosk/.xinitrc.erb"),
+    require               => [User['kiosk']]
+  }
+# make userdirs
+  file { $dirs:
+    ensure                => 'directory',
+    require               => User['kiosk'],
+    owner                 => 'kiosk',
+    group                 => 'kiosk',
+    mode                  => '0644'
   }
 # autostart java
   case $operatingsystem {
@@ -116,7 +100,7 @@ class kiosk::java(
     mode                  => '0644',
     content               => template("kiosk/openbox-autostart-java-linux.sh.erb"),
     require               => [File['/home/kiosk/.config/openbox']]
-    }
+  }
   }
   default: {
   file { '/home/kiosk/.config/openbox/autostart.sh':
@@ -128,8 +112,8 @@ class kiosk::java(
   }
   }
   common::directory_structure{ "/data/kiosk/${applet_name}":
-    user                    => 'kiosk',
-    mode                    => '0755'
+    user                  => 'kiosk',
+    mode                  => '0755'
   }
 # download java applet
   file {"/data/kiosk/${applet_name}/${applet_name}.zip":
