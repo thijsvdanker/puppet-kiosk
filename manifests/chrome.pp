@@ -26,10 +26,6 @@ class kiosk::chrome(
   package { $packages:
     ensure                => installed
   }
-ensure_resource('file', '/etc/apt/sources.list.d',{
-    ensure                => 'directory'
-    }
-  )
 # install google-chrome
   file { "/etc/apt/sources.list.d/google.list":
     owner                 => "kiosk",
