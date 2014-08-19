@@ -12,17 +12,10 @@
 #
 
 class kiosk::chrome(
-  $packages                             = ['xorg','openbox','squid3','build-essential','plymouth-theme-solar','ethtool'],
+  $packages                             = ['xorg','openbox','build-essential','plymouth-theme-solar','ethtool'],
   $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --proxy-server=http://localhost:8080 --no-first-run --kiosk --allow-file-access-from-files http://www.naturalis.nl/nl/het-museum/agenda/",
-  $homepage                             = "http://www.naturalis.nl/nl/het-museum/agenda/",
-  $acl_whitelist                        = ['.naturalis.nl/nl/het-museum/agenda/|.naturalis.nl/media|.naturalis.nl/static/*'],
-  $deny_info                            = "http://www.naturalis.nl/nl/het-museum/agenda/",
-  $cache_peer                           = ['.naturalis.nl/nl/het-museum/agenda/'],
-  $http_port                            = "8080",
-  $cache_mem                            = "128 MB",
-  $cache_max_object_size                = "1024 MB",
-  $cache_maximum_object_size_in_memory  = "512 KB",
+  $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --no-first-run --kiosk --allow-file-access-from-files https://localhost",
+  $homepage                             = "https://localhost:808",
   $enable_apache                        = false,
   $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
   $extractpassword                      = undef,
@@ -118,21 +111,6 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/.xinitrc.erb"),
     require               => [User['kiosk']]
   }
-# enable wake on lan
-  file { '/etc/init.d/wakeonlanconfig':
-    ensure                => present,
-    mode                  => '0755',
-    owner                 => 'kiosk',
-    content               => template("kiosk/wakeonlanconfig.erb"),
-    require               => [User['kiosk']],
-    notify                => Exec['update_wol']
-   }
-# Update wake on lanr
-  exec { 'update_wol':
-    command               => "/usr/sbin/update-rc.d -f wakeonlanconfig defaults && /etc/init.d/wakeonlanconfig",
-    refreshonly           => true,
-    require               => [File['/etc/init.d/wakeonlanconfig'], Package[$packages]]
- }
 # make userdirs
   file { $dirs:
     ensure                => 'directory',
@@ -174,28 +152,7 @@ ensure_resource('file', '/etc/apt/sources.list.d',{
     content               => template("kiosk/openbox-autostart.sh.erb"),
     require               => [File['/home/kiosk/.config/openbox']]
     }
-# make whitelist usable with regex
-  $acl_whitelist_real = join($acl_whitelist,'|')
-# if cache_peer not set, use whitelist for caching
-  if ($cache_peer) {
-    $cache_peer_real = $cache_peer
-  }
-  else {
-    $cache_peer_real = $acl_whitelist_real
-  }
-# ensure squid is running
-  service { 'squid3':
-    enable                => true,
-    ensure                => 'running',
-    require               => File['/etc/squid3/squid.conf']
-    }
-# squid proxy config
-  file { '/etc/squid3/squid.conf':
-    ensure                => present,
-    mode                  => '0644',
-    content               => template("kiosk/squid.conf.erb"),
-    require               => [Package[$packages]]
-    }
+
 # if needed installs apache
   if ($enable_apache) {
   package { $webpackages:
