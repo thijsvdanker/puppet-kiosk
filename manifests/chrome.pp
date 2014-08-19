@@ -17,6 +17,7 @@ class kiosk::chrome(
   $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --no-first-run --kiosk --allow-file-access-from-files https://localhost",
   $homepage                             = "https://localhost:808",
   $enable_apache                        = false,
+  $hide_cursor                          = false,
   $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
   $extractpassword                      = undef,
   $applet_name                          = undef,
@@ -50,33 +51,36 @@ class kiosk::chrome(
     ensure                => latest,
     require               => [ Exec["apt-get update"]],
   }
-# download and untar transparent cursor
-  exec { 'download_transparent':
-    command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
-    unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
-    require               => [Package[$packages]]
-  }
-# configure transparent cursor
-  exec {"config_transparent":
-    command               => "/bin/sh configure",
-    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
-    require               => Exec["download_transparent"]
-  }
-# configure transparent cursor
-  exec {"make_transparent":
-    command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -k",
-    cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
-    unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
-    require               => Exec["config_transparent"]
+
+  if $hide_cursor == 'true' {
+    # download and untar transparent cursor
+      exec { 'download_transparent':
+        command               => "/usr/bin/curl http://downloads.yoctoproject.org/releases/matchbox/utils/xcursor-transparent-theme-0.1.1.tar.gz -o /tmp/xcursor-transparent-theme-0.1.1.tar.gz && /bin/tar -xf /tmp/xcursor-transparent-theme-0.1.1.tar.gz -C /tmp",
+        unless                => "/usr/bin/test -f /tmp/xcursor-transparent-theme-0.1.1.tar.gz",
+        require               => [Package[$packages]]
+      }
+    # configure transparent cursor
+      exec {"config_transparent":
+        command               => "/bin/sh configure",
+        cwd                   => "/tmp/xcursor-transparent-theme-0.1.1",
+        unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
+        require               => Exec["download_transparent"]
+      }
+    # configure transparent cursor
+      exec {"make_transparent":
+        command               => "/usr/bin/make install-data-local DESTDIR=/home/kiosk/.icons/default CURSOR_DIR=/cursors -k",
+        cwd                   => "/tmp/xcursor-transparent-theme-0.1.1/cursors",
+        unless                => "/usr/bin/test -f /home/kiosk/.icons/default/cursors/transp",
+        require               => Exec["config_transparent"]
+        }
+    # autoset transparent cursor
+      file { '/home/kiosk/.icons/default/cursors/emptycursor':
+        ensure                => present,
+        mode                  => '0644',
+        content               => template("kiosk/emptycursor.erb"),
+        require               => Exec["make_transparent"]
+      }
     }
-# autoset transparent cursor
-  file { '/home/kiosk/.icons/default/cursors/emptycursor':
-    ensure                => present,
-    mode                  => '0644',
-    content               => template("kiosk/emptycursor.erb"),
-    require               => Exec["make_transparent"]
-  }
 # setup kiosk user
   user { "kiosk":
     comment               => "kiosk user",
