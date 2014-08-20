@@ -13,9 +13,9 @@
 
 class kiosk::chrome(
   $packages                             = ['xorg','openbox','build-essential','plymouth-theme-solar','ethtool'],
-  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/google-chrome','/home/kiosk/.config/google-chrome/Default','/home/kiosk/.config/google-chrome/Default/Extensions','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
-  $browser_path                         = "google-chrome --disable-translate --load-extension=/home/kiosk/.config/google-chrome/Default/Extensions/ --no-first-run --kiosk --allow-file-access-from-files https://localhost",
-  $homepage                             = "https://localhost:808",
+  $dirs                                 = ['/home/kiosk/','/home/kiosk/.config','/home/kiosk/.config/openbox','/home/kiosk/.icons/','/home/kiosk/.icons/default/','/home/kiosk/.icons/default/cursors'],
+  $browser_path                         = "chromium-browser --disable-translate --no-first-run --kiosk --allow-file-access-from-files http://localhost:8080",
+  $homepage                             = "http://localhost:8080",
   $enable_apache                        = false,
   $hide_cursor                          = false,
   $webpackages                          = ['apache2','php5','libapache2-mod-php5','p7zip-full'],
@@ -47,7 +47,7 @@ class kiosk::chrome(
     refreshonly           => true,
   }
 # Install latest stable
-  package { "google-chrome-stable":
+  package { "chromium-browser":
     ensure                => latest,
     require               => [ Exec["apt-get update"]],
   }
@@ -120,31 +120,15 @@ class kiosk::chrome(
     mode                  => '0644'
   }
 # ensure google-chrome config file
-  file { '/home/kiosk/.config/google-chrome/Local State':
+  file { '/etc/chromium-browser/policies/managed/kiosk_chrome.json':
     ensure                => present,
-    owner                 => 'kiosk',
-    group                 => 'kiosk',
-    mode                  => '0600',
-    content               => template("kiosk/chrome-config.erb"),
-    require               => [User['kiosk']]
+    owner                 => 'root',
+    group                 => 'root',
+    mode                  => '0644',
+    content               => template("kiosk/chrome-policy.erb"),
+    require               => [Package['chromium-browser']]
   }
-# improve scrollbar
-  file { '/home/kiosk/.config/google-chrome/Default/Extensions/manifest.json':
-    ensure                => present,
-    owner                 => 'kiosk',
-    group                 => 'kiosk',
-    mode                  => '0755',
-    content               => template("kiosk/chrome-manifest.erb"),
-    require               => [Package['google-chrome-stable'],File[$dirs]]
-  }
-  file { '/home/kiosk/.config/google-chrome/Default/Extensions/Custom.css':
-    ensure                => present,
-    owner                 => 'kiosk',
-    group                 => 'kiosk',
-    mode                  => '0755',
-    content               => template("kiosk/chrome-css.erb"),
-    require               => [Package['google-chrome-stable'],File[$dirs]]
-  }
+
 # autostart chrome
   file { '/home/kiosk/.config/openbox/autostart.sh':
     ensure                => present,
